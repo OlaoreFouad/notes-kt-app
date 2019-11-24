@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import dev.foodie.notes.models.Note
 import dev.foodie.notes.viewmodels.NoteViewModel
 import dev.foodie.notes.viewmodels.NoteViewModelFactory
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,18 +19,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(main_toolbar)
+
         viewModelFactory = NoteViewModelFactory(application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoteViewModel::class.java)
-        viewModel.addNote(Note(
-            tags = listOf("work", "me").joinToString(", "),
-            title = "Title",
-            content = "Content",
-            isBookmarked = false
-        ))
         Log.d("MainActivity", "Hey!!")
         viewModel.getNotes()?.observe(this, Observer {
             it.forEach { note -> Log.d("MainActivity", note.toString()) }
         })
-
     }
 }
