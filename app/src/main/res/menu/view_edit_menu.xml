@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+	android:id="@+id/nav_share"
+	android:title="@string/share_text" />
+
+  <item
+	android:id="@+id/nav_lock"
+	android:title="@string/lock_text" />
+
+  <item
+	android:id="@+id/nav_archive"
+	android:title="@string/archive_text" />
+
+  <item
+	android:id="@+id/nav_delete"
+	android:title="@string/delete_text" />
+
+  <item
+	android:id="@+id/nav_tags"
+	android:icon="@drawable/slack"
+	android:title="@string/tag_text"
+	app:showAsAction="ifRoom" />
+
+</menu>

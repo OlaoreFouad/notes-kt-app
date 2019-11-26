@@ -13,24 +13,20 @@
 	android:layout_height="wrap_content"
 	android:background="@color/colorPrimary"
 	app:layout_constraintTop_toTopOf="parent"
+	android:minHeight="?attr/actionBarSize"
 	app:menu="@menu/main_menu"
-	app:title="@string/app_name">
+	app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+	app:title="@string/app_name"/>
 
-	<RelativeLayout
-	  android:layout_width="wrap_content"
-	  android:layout_height="wrap_content"
-	  android:gravity="end">
-
-	  <Switch
-		android:layout_width="wrap_content"
-		android:id="@+id/archive_switch"
-		android:layout_height="wrap_content"
-		android:checked="true"
-		android:thumb="@drawable/switch_thumb_custom"
-		android:track="@drawable/switch_track_cutsom" />
-
-	</RelativeLayout>
-
-  </androidx.appcompat.widget.Toolbar>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+	android:layout_width="50dp"
+	android:layout_height="50dp"
+	android:id="@+id/add_note_fab"
+	app:layout_constraintBottom_toBottomOf="parent"
+	android:layout_marginBottom="20dp"
+	android:background="@color/colorPrimary"
+	android:layout_marginEnd="20dp"
+	app:fabSize="mini"
+	app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

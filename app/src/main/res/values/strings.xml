@@ -6,4 +6,9 @@
   <string name="settings_text">Settings</string>
   <string name="search_text">Search</string>
   <string name="filter_text">Filter</string>
+  <string name="share_text">Share</string>
+  <string name="lock_text">Lock</string>
+  <string name="archive_text">Archive</string>
+  <string name="delete_text">Delete</string>
+  <string name="tag_text">Tag</string>
 </resources>
