@@ -2,6 +2,7 @@ package dev.foodie.notes.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "notes_table")
 data class Note(
@@ -19,4 +20,4 @@ data class Note(
     var createdAt: Long = System.currentTimeMillis(),
 
     var lastModified: Long = createdAt
-)
+) : Serializable

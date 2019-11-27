@@ -1,5 +1,6 @@
 package dev.foodie.notes
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import dev.foodie.notes.activities.ViewEditActivity
 import dev.foodie.notes.models.Note
 import dev.foodie.notes.viewmodels.NoteViewModel
 import dev.foodie.notes.viewmodels.NoteViewModelFactory
@@ -17,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: NoteViewModel
     private lateinit var viewModelFactory: NoteViewModelFactory
     private val TAG = "MainActivity"
+
+    private val REQUEST_CODE = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.getNotes()?.observe(this, Observer {
             it.forEach { note -> Log.d("MainActivity", note.toString()) }
         })
+
+        add_note_fab.setOnClickListener {
+            Log.d(TAG, "Getting here...")
+            startActivity(Intent(applicationContext, ViewEditActivity::class.java))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

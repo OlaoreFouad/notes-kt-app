@@ -8,7 +8,7 @@
 
   <androidx.appcompat.widget.Toolbar
 	android:id="@+id/main_toolbar"
-	style="@style/Widget.AppCompat.Light.ActionBar"
+	style="@style/DarkOverFlowMenu"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:background="@color/colorPrimary"
@@ -19,14 +19,14 @@
 	app:title="@string/app_name"/>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-	android:layout_width="50dp"
-	android:layout_height="50dp"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
 	android:id="@+id/add_note_fab"
 	app:layout_constraintBottom_toBottomOf="parent"
 	android:layout_marginBottom="20dp"
-	android:background="@color/colorPrimary"
+	android:src="@drawable/add"
+	android:backgroundTint="@color/colorPrimary"
 	android:layout_marginEnd="20dp"
-	app:fabSize="mini"
 	app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
