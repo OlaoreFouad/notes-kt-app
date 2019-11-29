@@ -36,8 +36,17 @@ class MainActivity : AppCompatActivity() {
 
         add_note_fab.setOnClickListener {
             Log.d(TAG, "Getting here...")
-            startActivity(Intent(applicationContext, ViewEditActivity::class.java))
+            val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
+            intent.apply {
+                putExtra("note", Note(title = "Note from first activity!"))
+            }
+            startActivityForResult(intent, REQUEST_CODE)
         }
+    }
+
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
+        Log.d("MainActivity", "Result Code: $resultCode")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
