@@ -21,15 +21,22 @@
   <item
 	android:id="@+id/nav_tags"
 	android:icon="@drawable/tag"
-	android:title="@string/tag_text"
 	android:orderInCategory="2"
-	app:showAsAction="ifRoom" />
+	android:title="@string/tag_text"
+	app:showAsAction="always" />
 
   <item
 	android:id="@+id/nav_bookmark"
-	android:orderInCategory="1"
 	android:icon="@drawable/bookmark_outline"
+	android:orderInCategory="2"
 	android:title="@string/archive_text"
-	app:showAsAction="ifRoom" />
+	app:showAsAction="always" />
+
+  <item
+	android:id="@+id/nav_save"
+	android:icon="@drawable/save"
+	android:orderInCategory="1"
+	android:title="@string/save"
+	app:showAsAction="always" />
 
 </menu>

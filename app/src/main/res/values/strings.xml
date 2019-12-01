@@ -13,4 +13,11 @@
   <string name="tag_text">Tag</string>
   <string name="title_text">Title</string>
   <string name="content_text">Content</string>
+  <string name="save">Save</string>
+  <string name="work_text">Work</string>
+  <string name="personal_text">Personal</string>
+  <string name="games_text">Family</string>
+  <string name="family_text">Family</string>
+  <string name="study_text">Study</string>
+  <string name="uncategorised_text">Uncategorised</string>
 </resources>
