@@ -43,7 +43,6 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
 
         setSupportActionBar(view_edit_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = note.title
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,10 +103,13 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
             note.lastModified = System.currentTimeMillis()
         }
 
-        val intent = Intent()
-        intent.extras?.putSerializable("note", note)
-        intent.extras?.putBoolean("editMode", editMode)
-        setResult(Activity.RESULT_OK, intent)
+        editMode = true
+
+        val _intent = Intent()
+        _intent.extras?.putSerializable("note", note)
+        _intent.extras?.putBoolean("editMode", editMode)
+        setResult(Activity.RESULT_OK, _intent)
+        finish()
     }
 
     override fun onNavigateUp(): Boolean {

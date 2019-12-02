@@ -1,5 +1,6 @@
 package dev.foodie.notes
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -35,18 +36,31 @@ class MainActivity : AppCompatActivity() {
         })
 
         add_note_fab.setOnClickListener {
-            Log.d(TAG, "Getting here...")
             val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
             intent.apply {
-                putExtra("note", Note(title = "Note from first activity!"))
+                putExtra("note", Note())
             }
             startActivityForResult(intent, REQUEST_CODE)
         }
     }
 
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
-        super.onActivityReenter(resultCode, data)
-        Log.d("MainActivity", "Result Code: $resultCode")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            var note: Note
+            var editMode: Boolean
+            data.extras?.apply {
+                note = getSerializable("note") as Note
+                editMode = getBoolean("editMode")
+
+                if (editMode) {
+                    viewModel.updateNote(note)
+                } else {
+                    viewModel.addNote(note)
+                }
+
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

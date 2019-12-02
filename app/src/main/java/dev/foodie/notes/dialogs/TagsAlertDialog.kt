@@ -20,7 +20,7 @@ class TagsAlertDialog(var _tag: String = Constants.UNCATEGORIZED) : DialogFragme
         val view = LayoutInflater.from(activity).inflate(R.layout.tags_dialog, null)
         val radio_group = view.findViewById<RadioGroup>(R.id.tags_radio_group)
 
-        when(tag) {
+        when(_tag) {
             Constants.FAMIY -> radio_group.check(R.id.family_tag)
             Constants.PERSONAL -> radio_group.check(R.id.personal_tag)
             Constants.STUDY -> radio_group.check(R.id.study_tag)
