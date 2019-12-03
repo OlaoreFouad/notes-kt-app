@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import dev.foodie.notes.R
@@ -85,14 +86,11 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
             return
         }
 
-        if (
-            (note.title != title_edit_text.text.toString()) || (note.content != content_edit_text.text.toString())
-                ) {
-            note.title = title_edit_text.text.toString()
-            note.content = content_edit_text.text.toString()
+        note.title = binding.titleEditText.text.toString()
+        Log.d("App", "Note title: ${ note.title }")
+        note.content = binding.contentEditText.text.toString()
 
-            note.lastModified = System.currentTimeMillis()
-        }
+        note.lastModified = System.currentTimeMillis()
 
         if (isBookmarked != note.isBookmarked) {
             note.isBookmarked = isBookmarked
@@ -105,10 +103,10 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
 
         editMode = true
 
-        val _intent = Intent()
-        _intent.extras?.putSerializable("note", note)
-        _intent.extras?.putBoolean("editMode", editMode)
-        setResult(Activity.RESULT_OK, _intent)
+        intent.extras?.putSerializable("note", note)
+        intent.extras?.putBoolean("editMode", editMode)
+
+        setResult(Activity.RESULT_OK, intent)
         finish()
     }
 

@@ -53,11 +53,9 @@ class MainActivity : AppCompatActivity() {
                 note = getSerializable("note") as Note
                 editMode = getBoolean("editMode")
 
-                if (editMode) {
-                    viewModel.updateNote(note)
-                } else {
-                    viewModel.addNote(note)
-                }
+                Log.d(TAG, "Note: $note")
+
+                if (editMode) viewModel.updateNote(note) else viewModel.addNote(note)
 
             }
         }
