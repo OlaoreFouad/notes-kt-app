@@ -103,8 +103,8 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
 
         editMode = true
 
-        intent.extras?.putSerializable("note", note)
-        intent.extras?.putBoolean("editMode", editMode)
+        intent.putExtra("note", note)
+        intent.putExtra("editMode", editMode)
 
         setResult(Activity.RESULT_OK, intent)
         finish()
