@@ -7,9 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import dev.foodie.notes.activities.ViewEditActivity
+import dev.foodie.notes.adapters.NoteAdapter
+import dev.foodie.notes.databinding.ActivityMainBinding
 import dev.foodie.notes.models.Note
 import dev.foodie.notes.viewmodels.NoteViewModel
 import dev.foodie.notes.viewmodels.NoteViewModelFactory
@@ -22,17 +26,27 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
 
     private val REQUEST_CODE = 0
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setSupportActionBar(main_toolbar)
         viewModelFactory = NoteViewModelFactory(application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoteViewModel::class.java)
-        Log.d("MainActivity", "Hey!!")
+
+        adapter = NoteAdapter(applicationContext)
+
+        binding.noteRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            setHasFixedSize(true)
+            adapter = this@MainActivity.adapter
+        }
+
         viewModel.getNotes()?.observe(this, Observer {
-            it.forEach { note -> Log.d("MainActivity", note.toString()) }
+            adapter.submitList(it)
         })
 
         add_note_fab.setOnClickListener {
@@ -53,8 +67,7 @@ class MainActivity : AppCompatActivity() {
                 note = getSerializable("note") as Note
                 editMode = getBoolean("editMode")
 
-                Log.d(TAG, "Note: $note, Edit mode: $editMode")
-
+                Log.d("MainActivity", "Note: $note")
                 if (editMode) viewModel.updateNote(note) else viewModel.addNote(note)
 
             }

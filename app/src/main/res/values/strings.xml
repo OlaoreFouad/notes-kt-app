@@ -20,4 +20,7 @@
   <string name="family_text">Family</string>
   <string name="study_text">Study</string>
   <string name="uncategorised_text">Uncategorised</string>
+  <string name="tag_placeholder">#Recipes</string>
+  <string name="title_placeholder">KFC recipe</string>
+  <string name="note_date">16 Jul</string>
 </resources>

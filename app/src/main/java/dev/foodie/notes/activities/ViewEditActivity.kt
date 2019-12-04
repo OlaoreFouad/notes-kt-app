@@ -35,7 +35,7 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
         note = if (intent.extras?.getSerializable("note") != null) {
             (intent.extras?.getSerializable("note") as Note).apply { editMode = true }
         } else {
-            Note()
+            Note(tags = Constants.UNCATEGORIZED)
         }
         isBookmarked = note.isBookmarked
         tags = note.tags
@@ -96,12 +96,8 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
             note.isBookmarked = isBookmarked
         }
 
-        if (tags != note.tags) {
-            note.tags = tags
-            note.lastModified = System.currentTimeMillis()
-        }
-
-        editMode = true
+        note.lastModified = System.currentTimeMillis()
+        Log.d("App", "editMode: $editMode")
 
         intent.putExtra("note", note)
         intent.putExtra("editMode", editMode)

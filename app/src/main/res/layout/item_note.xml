@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+	<variable
+	  name="note"
+	  type="dev.foodie.notes.models.Note" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+	android:layout_width="match_parent"
+	android:background="?attr/selectableItemBackground"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:id="@+id/start_guideline"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:orientation="vertical"
+	  app:layout_constraintGuide_begin="20dp" />
+
+	<TextView
+	  android:id="@+id/note_tag"
+	  android:layout_width="0dp"
+	  android:layout_height="wrap_content"
+	  android:layout_marginTop="20dp"
+	  android:paddingTop="5dp"
+	  android:paddingBottom="5dp"
+	  android:text="@{ note.tags }"
+	  android:textColor="#a2a2a2"
+	  android:textSize="16sp"
+	  android:textStyle="bold"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  app:layout_constraintTop_toTopOf="parent"
+	  tools:text="@string/tag_placeholder" />
+
+	<TextView
+	  android:id="@+id/note_title"
+	  android:layout_width="0dp"
+	  android:layout_height="wrap_content"
+	  android:ellipsize="end"
+	  android:maxLines="1"
+	  android:textColor="@android:color/black"
+	  android:textSize="18sp"
+	  android:textStyle="bold"
+	  android:text="@{ note.title }"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  app:layout_constraintTop_toBottomOf="@id/note_tag"
+	  tools:text="@string/title_placeholder" />
+
+	<TextView
+	  android:id="@+id/note_content"
+	  android:layout_width="0dp"
+	  android:layout_height="wrap_content"
+	  android:layout_marginTop="5dp"
+	  android:ellipsize="end"
+	  android:text="@{ note.content }"
+	  android:maxLines="1"
+	  android:textColor="#a2a2a2"
+	  android:textSize="17sp"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  app:layout_constraintTop_toBottomOf="@id/note_title"
+	  tools:text="Lorem ipsum dolor sit amet consecteur adsplicingm nckslcnjklcb l" />
+
+	<ImageView
+	  android:id="@+id/note_bookmark"
+	  android:layout_width="20dp"
+	  android:layout_height="20dp"
+	  android:layout_marginTop="25dp"
+	  android:layout_marginEnd="5dp"
+	  tools:src="@drawable/bookmarked"
+	  app:layout_constraintEnd_toStartOf="@id/note_date"
+	  app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+	  android:id="@+id/note_date"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:layout_marginTop="20dp"
+	  android:paddingTop="5dp"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  app:layout_constraintTop_toTopOf="parent"
+	  tools:text="@string/note_date" />
+
+	<View
+	  android:id="@+id/note_divider"
+	  android:layout_width="match_parent"
+	  android:layout_height="0.5dp"
+	  android:layout_marginTop="20dp"
+	  android:background="#a2a2a2"
+	  app:layout_constraintTop_toBottomOf="@id/note_content" />
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:id="@+id/end_guideline"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:orientation="vertical"
+	  app:layout_constraintGuide_end="20dp" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
