@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dev.foodie.notes.activities.ViewEditActivity
 import dev.foodie.notes.adapters.NoteAdapter
 import dev.foodie.notes.databinding.ActivityMainBinding
+import dev.foodie.notes.listeners.OnNoteSelectedListener
 import dev.foodie.notes.models.Note
 import dev.foodie.notes.viewmodels.NoteViewModel
 import dev.foodie.notes.viewmodels.NoteViewModelFactory
@@ -37,7 +38,15 @@ class MainActivity : AppCompatActivity() {
         viewModelFactory = NoteViewModelFactory(application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoteViewModel::class.java)
 
-        adapter = NoteAdapter(applicationContext)
+        adapter = NoteAdapter(applicationContext, object : OnNoteSelectedListener {
+            override fun noteSelected(position: Int) {
+                val note = adapter.currentList[position]
+                val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
+                intent.putExtra("note", note)
+
+                startActivityForResult(intent, REQUEST_CODE)
+            }
+        })
 
         binding.noteRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -51,9 +60,6 @@ class MainActivity : AppCompatActivity() {
 
         add_note_fab.setOnClickListener {
             val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
-            intent.apply {
-                putExtra("note", Note())
-            }
             startActivityForResult(intent, REQUEST_CODE)
         }
     }

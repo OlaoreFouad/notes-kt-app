@@ -48,6 +48,13 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.view_edit_menu, menu)
+
+        if (isBookmarked) {
+            view_edit_toolbar.menu.findItem(R.id.nav_bookmark).setIcon(R.drawable.bookmarked)
+        } else {
+            view_edit_toolbar.menu.findItem(R.id.nav_bookmark).setIcon(R.drawable.bookmark_outline)
+        }
+
         return true
     }
 
@@ -59,11 +66,23 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
             R.id.nav_archive -> { /* TODO: handle archive logic */ }
             R.id.nav_delete -> { /* TODO: handle delete logic */ }
             R.id.nav_tags -> tag()
-            R.id.nav_bookmark -> { /* TODO: handle bookmark logic */ }
+            R.id.nav_bookmark -> bookmark()
             R.id.nav_save -> save()
         }
 
         return true
+    }
+
+    fun bookmark() {
+        isBookmarked = !isBookmarked
+        note.isBookmarked = isBookmarked
+        if (isBookmarked) {
+            showSnackbar("Bookmarked")
+            view_edit_toolbar.menu.findItem(R.id.nav_bookmark).setIcon(R.drawable.bookmarked)
+        } else {
+            showSnackbar("Unbookmarked")
+            view_edit_toolbar.menu.findItem(R.id.nav_bookmark).setIcon(R.drawable.bookmark_outline)
+        }
     }
 
     fun tag() {
@@ -80,9 +99,13 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
         dialog.show(supportFragmentManager, "Tags")
     }
 
+    fun showSnackbar(msg: String) {
+        Snackbar.make(title_edit_text, msg, Snackbar.LENGTH_SHORT).show()
+    }
+
     fun save() {
         if (TextUtils.isEmpty(title_edit_text.text) || TextUtils.isEmpty(content_edit_text.text)) {
-            Snackbar.make(title_edit_text, "Empty fields!", Snackbar.LENGTH_SHORT).show()
+            showSnackbar("Empty Fields!")
             return
         }
 
@@ -91,10 +114,7 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
         note.content = binding.contentEditText.text.toString()
 
         note.lastModified = System.currentTimeMillis()
-
-        if (isBookmarked != note.isBookmarked) {
-            note.isBookmarked = isBookmarked
-        }
+        note.isBookmarked = isBookmarked
 
         note.lastModified = System.currentTimeMillis()
         Log.d("App", "editMode: $editMode")
