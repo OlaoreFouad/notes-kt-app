@@ -65,7 +65,7 @@ class NoteRepository(application: Application) {
         }
     }
 
-    fun getAllNotes() = allNotes
+    fun getAllNotes() = dao.getNotes()
 
     suspend fun executeWrite(note: Note, block: (Note) -> Unit) {
         withContext(Dispatchers.IO) {

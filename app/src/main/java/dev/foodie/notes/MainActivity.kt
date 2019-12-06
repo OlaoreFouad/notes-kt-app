@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
                 intent.putExtra("note", note)
 
+                Log.d("MainActivity", "Note: $note")
+
                 startActivityForResult(intent, REQUEST_CODE)
             }
         })
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
                 Log.d("MainActivity", "Note: $note")
                 if (editMode) viewModel.updateNote(note) else viewModel.addNote(note)
-
+//                refresh()
             }
         }
     }
@@ -92,4 +94,8 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /*private fun refresh() {
+        adapter.submitList(viewModel.getNotes().value)
+    }
+*/
 }

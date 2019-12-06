@@ -72,7 +72,7 @@ class NoteAdapter(var ctx: Context, val mOnNoteSelectedListener: OnNoteSelectedL
 
 class NoteDiffUtilCallback : DiffUtil.ItemCallback<Note>() {
     override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-        return oldItem.title == newItem.title
+        return oldItem.title == newItem.title && oldItem.tags == newItem.tags && oldItem.isBookmarked == newItem.isBookmarked
     }
 
     override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {

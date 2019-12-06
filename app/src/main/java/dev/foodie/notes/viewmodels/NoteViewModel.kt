@@ -14,7 +14,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateNote(note: Note) = repo.update(note)
 
-    fun getNotes() = allNotes
+    fun getNotes() = repo.getAllNotes()
 
     fun getNotesBy(param: String) = repo.getNotesByParam(param)
 
