@@ -8,38 +8,51 @@ import android.view.LayoutInflater
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dev.foodie.notes.R
+import dev.foodie.notes.adapters.Tag
+import dev.foodie.notes.adapters.TagAdapter
 import dev.foodie.notes.utils.Constants
 
-class TagsAlertDialog(var _tag: String = Constants.UNCATEGORIZED) : DialogFragment() {
+class TagsAlertDialog(var _tagIndex: Int) : DialogFragment() {
 
     private lateinit var mOnTagSelectedListener: OnTagSelectedListener
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val view = LayoutInflater.from(activity).inflate(R.layout.tags_dialog, null)
-        val radio_group = view.findViewById<RadioGroup>(R.id.tags_radio_group)
-
-        when(_tag) {
-            Constants.FAMIY -> radio_group.check(R.id.family_tag)
-            Constants.PERSONAL -> radio_group.check(R.id.personal_tag)
-            Constants.STUDY -> radio_group.check(R.id.study_tag)
-            Constants.WORK -> radio_group.check(R.id.work_tag)
-            else -> radio_group.check(R.id.uncategorised_tag)
-        }
+        recyclerView = view.findViewById(R.id.tag_list)
+        setupRecyclerView()
 
         val dialog = AlertDialog.Builder(activity)
             .setView(view)
-            .setNegativeButton("Cancel") { p0, _ ->
-                p0?.dismiss()
-                mOnTagSelectedListener.tagSelected(resources.getString(R.string.uncategorised_text))
-            }
-            .setPositiveButton("Done") { p0, _ ->
-                p0.dismiss()
-                mOnTagSelectedListener.tagSelected(view.findViewById<RadioButton>(radio_group.checkedRadioButtonId).text.toString())
-            }
 
         return dialog.create()
+    }
+
+    private fun setupRecyclerView() {
+        val adapter = TagAdapter(context!!, getTags())
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context!!)
+            setHasFixedSize(true)
+            setAdapter(adapter)
+        }
+    }
+
+    private fun getTags(): List<Tag> {
+        val tagsList = mutableListOf<Tag>()
+
+        tagsList.add(Tag(Constants.TAG_MAP[1]!!, false))
+        tagsList.add(Tag(Constants.TAG_MAP[2]!!, false))
+        tagsList.add(Tag(Constants.TAG_MAP[3]!!, false))
+        tagsList.add(Tag(Constants.TAG_MAP[4]!!, false))
+        tagsList.add(Tag(Constants.TAG_MAP[5]!!, false))
+
+        tagsList.set(_tagIndex - 1, Tag(Constants.TAG_MAP[_tagIndex]!!, true))
+
+        return tagsList
     }
 
     override fun onAttach(context: Context) {

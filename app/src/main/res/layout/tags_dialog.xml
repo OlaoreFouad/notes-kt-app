@@ -1,48 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:layout_width="match_parent"
-  android:gravity="center"
-  android:paddingTop="10dp"
-  android:paddingBottom="10dp"
-  android:layout_height="match_parent">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/dialog_background"
+  app:cardCornerRadius="30dp"
+  android:paddingTop="15dp"
+  android:paddingBottom="15dp">
 
-  <RadioGroup
+  <androidx.constraintlayout.widget.ConstraintLayout
 	android:layout_width="match_parent"
-	android:layout_marginStart="20dp"
-	android:layout_marginEnd="20dp"
-	android:id="@+id/tags_radio_group"
-	android:layout_height="wrap_content">
+	android:background="@drawable/dialog_background"
+	android:layout_height="match_parent">
 
-	<RadioButton
+	<androidx.recyclerview.widget.RecyclerView
+	  android:id="@+id/tag_list"
 	  android:layout_width="match_parent"
-	  android:text="@string/uncategorised_text"
-	  android:id="@+id/uncategorised_tag"
-	  android:layout_height="wrap_content" />
+	  android:layout_height="0dp"
+	  app:layout_constraintTop_toTopOf="parent"
+	  tools:itemCount="5"
+	  tools:listitem="@layout/item_tag" />
 
-	<RadioButton
+	<Button
+	  android:id="@+id/confirm_button"
 	  android:layout_width="match_parent"
-	  android:text="@string/work_text"
-	  android:id="@+id/work_tag"
-	  android:layout_height="wrap_content" />
+	  android:layout_height="wrap_content"
+	  android:background="@color/colorPrimaryDark"
+	  android:text="Confirm"
+	  android:textSize="18sp"
+	  app:layout_constraintBottom_toBottomOf="parent" />
 
-	<RadioButton
-	  android:layout_width="match_parent"
-	  android:text="@string/personal_text"
-	  android:id="@+id/personal_tag"
-	  android:layout_height="wrap_content" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
-	<RadioButton
-	  android:layout_width="match_parent"
-	  android:text="@string/family_text"
-	  android:id="@+id/family_tag"
-	  android:layout_height="wrap_content" />
-
-	<RadioButton
-	  android:layout_width="match_parent"
-	  android:text="@string/study_text"
-	  android:id="@+id/study_tag"
-	  android:layout_height="wrap_content" />
-
-  </RadioGroup>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

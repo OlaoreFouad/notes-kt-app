@@ -89,14 +89,28 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
         val dialog: TagsAlertDialog
 
         if (note.tags != Constants.UNCATEGORIZED) {
-            dialog = TagsAlertDialog(note.tags)
+
+            val map = Constants.TAG_MAP.filter { it.value == note.tags }
+
+            dialog = TagsAlertDialog(getIdx(note.tags))
             dialog.show(supportFragmentManager, "Tags")
             return
         }
 
-        dialog = TagsAlertDialog()
+        dialog = TagsAlertDialog(getIdx(note.tags))
 
         dialog.show(supportFragmentManager, "Tags")
+    }
+
+    private fun getIdx(tag: String): Int {
+        return when(tag) {
+            Constants.UNCATEGORIZED -> 1
+            Constants.FAMIY -> 5
+            Constants.STUDY -> 4
+            Constants.PERSONAL -> 2
+            Constants.WORK -> 3
+            else -> 1
+        }
     }
 
     fun showSnackbar(msg: String) {
