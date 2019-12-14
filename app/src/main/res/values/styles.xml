@@ -19,4 +19,8 @@
         <item name="android:textColorSecondary">@android:color/black</item>
     </style>
 
+    <!--<style name="ProgressDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">-->
+        <!--<item name="android:windowBackground">@color/automile_transparent</item>-->
+    <!--</style>-->
+
 </resources>

@@ -1,6 +1,7 @@
 package dev.foodie.notes.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,22 @@ class TagAdapter(var ctx: Context, var tags: List<Tag>) : RecyclerView.Adapter<T
 
     private var selectedPosition = 0
 
+    init {
+        tags.forEach { Log.d("Adapter", it.toString()) }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TagViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) = holder.bind(tags[position])
 
     override fun getItemCount() = tags.size
 
-    class TagViewHolder(val itemTagBinding: ItemTagBinding) : RecyclerView.ViewHolder(itemTagBinding.root) {
+    class TagViewHolder(private val itemTagBinding: ItemTagBinding) : RecyclerView.ViewHolder(itemTagBinding.root) {
 
         fun bind(tag: Tag) {
             itemTagBinding.isChecked = tag.isChecked
+            itemTagBinding.tagText.text = tag.name
+            Log.d("Adapter", "Inside Binding: ${tag.name}")
         }
 
         companion object {

@@ -1,6 +1,7 @@
 package dev.foodie.notes.activities
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -86,18 +87,8 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
     }
 
     fun tag() {
-        val dialog: TagsAlertDialog
-
-        if (note.tags != Constants.UNCATEGORIZED) {
-
-            val map = Constants.TAG_MAP.filter { it.value == note.tags }
-
-            dialog = TagsAlertDialog(getIdx(note.tags))
-            dialog.show(supportFragmentManager, "Tags")
-            return
-        }
-
-        dialog = TagsAlertDialog(getIdx(note.tags))
+        val idx = getIdx(note.tags)
+        val dialog = TagsAlertDialog(idx)
 
         dialog.show(supportFragmentManager, "Tags")
     }

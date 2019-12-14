@@ -5,19 +5,22 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@drawable/dialog_background"
-  app:cardCornerRadius="30dp"
   android:paddingTop="15dp"
-  android:paddingBottom="15dp">
+  android:paddingBottom="15dp"
+  app:cardCornerRadius="30dp">
 
   <androidx.constraintlayout.widget.ConstraintLayout
 	android:layout_width="match_parent"
-	android:background="@drawable/dialog_background"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:background="@drawable/dialog_background">
 
 	<androidx.recyclerview.widget.RecyclerView
 	  android:id="@+id/tag_list"
-	  android:layout_width="match_parent"
+	  android:layout_width="0dp"
 	  android:layout_height="0dp"
+	  app:layout_constraintBottom_toTopOf="@id/confirm_button"
+	  app:layout_constraintEnd_toEndOf="parent"
+	  app:layout_constraintStart_toStartOf="parent"
 	  app:layout_constraintTop_toTopOf="parent"
 	  tools:itemCount="5"
 	  tools:listitem="@layout/item_tag" />

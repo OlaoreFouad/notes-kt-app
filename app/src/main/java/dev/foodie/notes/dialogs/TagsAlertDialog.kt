@@ -3,8 +3,14 @@ package dev.foodie.notes.dialogs
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
+import android.view.Window
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
@@ -28,8 +34,12 @@ class TagsAlertDialog(var _tagIndex: Int) : DialogFragment() {
 
         val dialog = AlertDialog.Builder(activity)
             .setView(view)
+            .create()
 
-        return dialog.create()
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        return dialog
     }
 
     private fun setupRecyclerView() {
@@ -43,14 +53,14 @@ class TagsAlertDialog(var _tagIndex: Int) : DialogFragment() {
 
     private fun getTags(): List<Tag> {
         val tagsList = mutableListOf<Tag>()
-
-        tagsList.add(Tag(Constants.TAG_MAP[1]!!, false))
-        tagsList.add(Tag(Constants.TAG_MAP[2]!!, false))
-        tagsList.add(Tag(Constants.TAG_MAP[3]!!, false))
-        tagsList.add(Tag(Constants.TAG_MAP[4]!!, false))
-        tagsList.add(Tag(Constants.TAG_MAP[5]!!, false))
-
-        tagsList.set(_tagIndex - 1, Tag(Constants.TAG_MAP[_tagIndex]!!, true))
+        listOf(1, 2, 3, 4, 5).forEach {
+            val tag = Constants.TAG_MAP.getValue(it)
+            if (_tagIndex == it) {
+                tagsList.add(Tag(tag, true))
+            } else {
+                tagsList.add(Tag(tag, false))
+            }
+        }
 
         return tagsList
     }
