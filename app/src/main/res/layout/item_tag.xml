@@ -23,8 +23,8 @@
 
 	<ImageView
 	  android:id="@+id/tag_checked_image"
-	  android:layout_width="50dp"
-	  android:layout_height="50dp"
+	  android:layout_width="30dp"
+	  android:layout_height="40dp"
 	  android:layout_marginEnd="20dp"
 	  android:src="@{ isChecked ? @drawable/checked : @drawable/check }"
 	  tools:src="@drawable/check"
@@ -38,7 +38,7 @@
 	  android:layout_height="wrap_content"
 	  tools:text="Uncategorised"
 	  android:textColor="@android:color/black"
-	  android:textSize="20sp"
+	  android:textSize="18sp"
 	  app:layout_constraintBottom_toBottomOf="parent"
 	  app:layout_constraintEnd_toEndOf="parent"
 	  app:layout_constraintStart_toEndOf="@id/tag_checked_image"

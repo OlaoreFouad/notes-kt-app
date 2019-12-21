@@ -12,24 +12,31 @@ import dev.foodie.notes.databinding.ItemTagBinding
 
 class TagAdapter(var ctx: Context, var tags: List<Tag>) : RecyclerView.Adapter<TagAdapter.TagViewHolder>() {
 
-    private var selectedPosition = 0
-
-    init {
-        tags.forEach { Log.d("Adapter", it.toString()) }
-    }
+    var selectedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TagViewHolder.from(parent)
 
-    override fun onBindViewHolder(holder: TagViewHolder, position: Int) = holder.bind(tags[position])
+    override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
+
+        val tag = tags[position]
+        if (tag.isChecked) {
+            selectedPosition = position
+        }
+
+        holder.bind(tags[position])
+    }
 
     override fun getItemCount() = tags.size
 
-    class TagViewHolder(private val itemTagBinding: ItemTagBinding) : RecyclerView.ViewHolder(itemTagBinding.root) {
+    class TagViewHolder(private val itemTagBinding: ItemTagBinding) : RecyclerView.ViewHolder(itemTagBinding.root), View.OnClickListener {
 
         fun bind(tag: Tag) {
             itemTagBinding.isChecked = tag.isChecked
             itemTagBinding.tagText.text = tag.name
-            Log.d("Adapter", "Inside Binding: ${tag.name}")
+        }
+
+        override fun onClick(p0: View?) {
+
         }
 
         companion object {
