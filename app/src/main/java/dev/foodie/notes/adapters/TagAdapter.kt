@@ -6,29 +6,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.foodie.notes.R
 import dev.foodie.notes.databinding.ItemTagBinding
+import dev.foodie.notes.listeners.TagInteraction
 
-class TagAdapter(var ctx: Context, var tags: List<Tag>) : RecyclerView.Adapter<TagAdapter.TagViewHolder>() {
+class TagAdapter(var ctx: Context, var callback: (Int, Int) -> Unit)
+    : ListAdapter<Tag, TagAdapter.TagViewHolder>(TagDiffUtilCallback()) {
 
     var selectedPosition = 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TagViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TagViewHolder(ItemTagBinding.inflate(
+        LayoutInflater.from(parent.context), parent, false)
+    )
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
 
-        val tag = tags[position]
+        val tag = getItem(position)
         if (tag.isChecked) {
             selectedPosition = position
         }
 
-        holder.bind(tags[position])
+        holder.bind(tag)
     }
 
-    override fun getItemCount() = tags.size
+    override fun getItemCount() = currentList.size
 
-    class TagViewHolder(private val itemTagBinding: ItemTagBinding) : RecyclerView.ViewHolder(itemTagBinding.root), View.OnClickListener {
+    inner class TagViewHolder(private val itemTagBinding: ItemTagBinding) : RecyclerView.ViewHolder(itemTagBinding.root), View.OnClickListener {
+
+        init {
+            itemTagBinding.root.setOnClickListener(this)
+        }
 
         fun bind(tag: Tag) {
             itemTagBinding.isChecked = tag.isChecked
@@ -36,15 +46,9 @@ class TagAdapter(var ctx: Context, var tags: List<Tag>) : RecyclerView.Adapter<T
         }
 
         override fun onClick(p0: View?) {
-
-        }
-
-        companion object {
-            fun from(parent: ViewGroup) : TagViewHolder {
-                val inflater = LayoutInflater.from(parent.context)
-                val binding = ItemTagBinding.inflate(inflater, parent, false)
-
-                return TagViewHolder(binding)
+            val position = adapterPosition
+            if (position != selectedPosition) {
+                callback(selectedPosition, position)
             }
         }
 
@@ -53,3 +57,12 @@ class TagAdapter(var ctx: Context, var tags: List<Tag>) : RecyclerView.Adapter<T
 }
 
 data class Tag(val name: String, var isChecked: Boolean)
+class TagDiffUtilCallback() : DiffUtil.ItemCallback<Tag>() {
+    override fun areItemsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+        return oldItem.isChecked == newItem.isChecked
+    }
+
+    override fun areContentsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+        return oldItem.name == newItem.name && oldItem.isChecked == newItem.isChecked
+    }
+}

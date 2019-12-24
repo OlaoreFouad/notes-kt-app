@@ -104,11 +104,11 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
         }
     }
 
-    fun showSnackbar(msg: String) {
+    private fun showSnackbar(msg: String) {
         Snackbar.make(title_edit_text, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    fun save() {
+    private fun save() {
         if (TextUtils.isEmpty(title_edit_text.text) || TextUtils.isEmpty(content_edit_text.text)) {
             showSnackbar("Empty Fields!")
             return
@@ -138,7 +138,7 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
 
     override fun tagSelected(tag: String) {
         note.tags = tag
-        Log.d("App", tag)
+        Log.d("App", note.tags)
     }
 
 }
