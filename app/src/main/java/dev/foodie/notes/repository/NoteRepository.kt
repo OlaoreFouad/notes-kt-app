@@ -67,25 +67,25 @@ class NoteRepository(application: Application) {
 
     fun getAllNotes() = dao.getNotes()
 
-    suspend fun executeWrite(note: Note, block: (Note) -> Unit) {
+    private suspend fun executeWrite(note: Note, block: (Note) -> Unit) {
         withContext(Dispatchers.IO) {
             block(note)
         }
     }
 
-    suspend fun executeDeleteNotes() {
+    private suspend fun executeDeleteNotes() {
         withContext(Dispatchers.IO) {
             dao.deleteAllNotes()
         }
     }
 
-    suspend fun executeDeleteNote(note: Note) {
+    private suspend fun executeDeleteNote(note: Note) {
         withContext(Dispatchers.IO) {
             dao.deleteNote(note)
         }
     }
 
-    suspend fun executeRead(block: () -> Note): Note? {
+    private suspend fun executeRead(block: () -> Note): Note? {
         var note: Note? = null
         withContext(Dispatchers.IO) {
              note = block()
@@ -93,7 +93,7 @@ class NoteRepository(application: Application) {
         return note
     }
 
-    suspend fun executeReadByParam(param: String, tag: String = ""): LiveData<List<Note>> {
+    private suspend fun executeReadByParam(param: String, tag: String = ""): LiveData<List<Note>> {
         var data: LiveData<List<Note>>? =  null
         withContext(Dispatchers.IO) {
             data = when(param) {
