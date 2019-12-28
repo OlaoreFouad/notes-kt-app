@@ -47,7 +47,6 @@
 	  android:maxLines="1"
 	  android:textColor="@android:color/black"
 	  android:textSize="18sp"
-	  android:textStyle="bold"
 	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
 	  app:layout_constraintStart_toEndOf="@id/start_guideline"
 	  app:layout_constraintTop_toBottomOf="@id/note_tag"
@@ -90,7 +89,7 @@
 	<View
 	  android:id="@+id/note_divider"
 	  android:layout_width="match_parent"
-	  android:layout_height="0.5dp"
+	  android:layout_height="0.6dp"
 	  android:layout_marginTop="20dp"
 	  android:background="#a2a2a2"
 	  app:layout_constraintTop_toBottomOf="@id/note_content" />

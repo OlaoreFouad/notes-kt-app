@@ -23,4 +23,8 @@
   <string name="tag_placeholder">#Recipes</string>
   <string name="title_placeholder">KFC recipe</string>
   <string name="note_date">16 Jul</string>
+
+  <string name="created_modified_text_p">Created 4 Jul 2017 21:04 - Modified 16 Jul 2019 18:56</string>
+  <string name="created_modified_text">Created %s - Modified %s</string>
+
 </resources>

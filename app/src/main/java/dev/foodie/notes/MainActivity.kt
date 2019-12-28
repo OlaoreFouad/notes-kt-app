@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dev.foodie.notes.activities.ViewEditActivity
 import dev.foodie.notes.adapters.NoteAdapter
 import dev.foodie.notes.databinding.ActivityMainBinding
+import dev.foodie.notes.fragments.BottomSheetFragment
 import dev.foodie.notes.listeners.OnNoteSelectedListener
 import dev.foodie.notes.models.Note
 import dev.foodie.notes.viewmodels.NoteViewModel
@@ -43,9 +44,6 @@ class MainActivity : AppCompatActivity() {
                 val note = adapter.currentList[position]
                 val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
                 intent.putExtra("note", note)
-
-                Log.d("MainActivity", "Note: $note")
-
                 startActivityForResult(intent, REQUEST_CODE)
             }
         })
@@ -64,6 +62,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE)
         }
+
+        val bottomBar = BottomSheetFragment()
+        bottomBar.show(supportFragmentManager, "bottomBar")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
