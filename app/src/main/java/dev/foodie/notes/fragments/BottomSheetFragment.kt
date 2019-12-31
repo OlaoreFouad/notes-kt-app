@@ -11,7 +11,7 @@ import dev.foodie.notes.adapters.MenuAdapter
 import dev.foodie.notes.dialogs.RoundedBottomSheetDialogFragment
 import dev.foodie.notes.utils.Constants
 
-class BottomSheetFragment : RoundedBottomSheetDialogFragment() {
+class BottomSheetFragment(val actionSelectedListener: (Int, Int) -> Unit) : RoundedBottomSheetDialogFragment() {
 
     private lateinit var menuRecyclerView: RecyclerView
     private lateinit var menuAdapter: MenuAdapter
@@ -28,7 +28,7 @@ class BottomSheetFragment : RoundedBottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         menuRecyclerView = view.findViewById(R.id.menu_list)
 
-        menuAdapter = MenuAdapter(requireActivity(), Constants.MENUS)
+        menuAdapter = MenuAdapter(requireActivity(), Constants.MENUS, actionSelectedListener)
         menuRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)

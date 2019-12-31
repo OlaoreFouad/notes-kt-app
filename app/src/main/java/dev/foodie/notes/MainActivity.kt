@@ -17,6 +17,7 @@ import dev.foodie.notes.databinding.ActivityMainBinding
 import dev.foodie.notes.fragments.BottomSheetFragment
 import dev.foodie.notes.listeners.OnNoteSelectedListener
 import dev.foodie.notes.models.Note
+import dev.foodie.notes.utils.Constants
 import dev.foodie.notes.viewmodels.NoteViewModel
 import dev.foodie.notes.viewmodels.NoteViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,11 +41,37 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoteViewModel::class.java)
 
         adapter = NoteAdapter(applicationContext, object : OnNoteSelectedListener {
-            override fun noteSelected(position: Int) {
+            override fun noteSelected(position: Int, src: Int) {
                 val note = adapter.currentList[position]
-                val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
-                intent.putExtra("note", note)
-                startActivityForResult(intent, REQUEST_CODE)
+
+                if (src == 0) {
+                    val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
+                    intent.putExtra("note", note)
+                    startActivityForResult(intent, REQUEST_CODE)
+                } else {
+                    val bottomSheetFragment = BottomSheetFragment { actionId, noteId ->
+                        when(actionId) {
+                            Constants.BOOKMARK -> {
+
+                            }
+                            Constants.SHARE -> {
+                                // do shit
+                            }
+                            Constants.LOCK -> {
+                                // do shit
+                            }
+                            Constants.ARCHIVE -> {
+                                // do shit
+                            }
+                            Constants.DELETE -> {
+                                // do shit
+                            }
+                        }
+                    }
+                    val bundle = Bundle()
+                    bundle.putSerializable("note", note)
+                    bottomSheetFragment.arguments = bundle
+                }
             }
         })
 
@@ -63,8 +90,8 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE)
         }
 
-        val bottomBar = BottomSheetFragment()
-        bottomBar.show(supportFragmentManager, "bottomBar")
+       // val bottomBar = BottomSheetFragment()
+        // bottomBar.show(supportFragmentManager, "bottomBar")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -93,6 +120,18 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_archived -> item.isChecked = !item.isChecked
         }
         return true
+    }
+
+    fun bookmark(noteId: Int) {
+
+    }
+
+    fun share(noteId: Int) {
+
+    }
+
+    fun lock(noteId: Int) {
+
     }
 
     /*private fun refresh() {

@@ -11,7 +11,7 @@ import dev.foodie.notes.R
 import dev.foodie.notes.models.Menu
 import dev.foodie.notes.views.BottomMenuItem
 
-class MenuAdapter(val ctx: Context, val menus: List<Menu>) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+class MenuAdapter(val ctx: Context, val menus: List<Menu>, val actionSelectedListener: (Int, Int) -> Unit) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder = MenuViewHolder.from(parent)
 
@@ -29,6 +29,11 @@ class MenuAdapter(val ctx: Context, val menus: List<Menu>) : RecyclerView.Adapte
 
             image.setImageResource(menu.res)
             text.text = menu.text
+
+            if (menu.id != 4) {
+                val divider = itemView.findViewById<View>(R.id.view_divider)
+                divider.visibility = View.INVISIBLE
+            }
         }
 
         companion object {

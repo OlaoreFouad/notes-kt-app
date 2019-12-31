@@ -19,7 +19,9 @@ import dev.foodie.notes.models.Note
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteAdapter(var ctx: Context, val mOnNoteSelectedListener: OnNoteSelectedListener) : ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteDiffUtilCallback()) {
+class NoteAdapter
+    (var ctx: Context, private val mOnNoteSelectedListener: OnNoteSelectedListener)
+    : ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder.from(parent, mOnNoteSelectedListener)
@@ -32,15 +34,24 @@ class NoteAdapter(var ctx: Context, val mOnNoteSelectedListener: OnNoteSelectedL
 
     override fun getItemCount() = currentList.size
 
-    class NoteViewHolder private constructor(private val itemNoteBinding: ItemNoteBinding, private val listener: OnNoteSelectedListener)
-        : RecyclerView.ViewHolder(itemNoteBinding.root), View.OnClickListener {
+    class NoteViewHolder
+        private constructor(
+            private val itemNoteBinding: ItemNoteBinding,
+            private val listener: OnNoteSelectedListener)
+        : RecyclerView.ViewHolder(itemNoteBinding.root), View.OnClickListener, View.OnLongClickListener {
 
         init {
             itemNoteBinding.root.setOnClickListener(this)
+            itemNoteBinding.root.setOnLongClickListener(this)
+        }
+
+        override fun onLongClick(p0: View?): Boolean {
+            listener.noteSelected(adapterPosition, 1)
+            return true
         }
 
         override fun onClick(p0: View?) {
-            listener.noteSelected(adapterPosition)
+            listener.noteSelected(adapterPosition, 0)
         }
 
         @SuppressLint("SimpleDateFormat")
