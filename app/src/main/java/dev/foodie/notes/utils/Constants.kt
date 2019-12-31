@@ -22,6 +22,7 @@ object Constants {
         Menu("Bookmark", R.drawable.bookmark_border, BOOKMARK),
         Menu("Share", R.drawable.share, SHARE),
         Menu("Lock", R.drawable.lock, LOCK),
-        Menu("Archive", R.drawable.archive, ARCHIVE)
+        Menu("Archive", R.drawable.archive, ARCHIVE),
+        Menu("Delete", R.drawable.delete, DELETE)
     )
 }

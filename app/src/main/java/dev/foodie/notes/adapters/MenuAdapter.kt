@@ -24,15 +24,18 @@ class MenuAdapter(val ctx: Context, val menus: List<Menu>) : RecyclerView.Adapte
     class MenuViewHolder private constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun bind(menu: Menu) {
-            val menuItem: BottomMenuItem = itemView.findViewById(R.id.bottom_menu_item)
-            menuItem.setData(menu)
+            val image = itemView.findViewById<ImageView>(R.id.menu_image)
+            val text = itemView.findViewById<TextView>(R.id.menu_text)
+
+            image.setImageResource(menu.res)
+            text.text = menu.text
         }
 
         companion object {
 
             fun from(parent: ViewGroup) : MenuViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                return MenuViewHolder(inflater.inflate(R.layout.bottom_menu_item_layout, parent, false))
+                return MenuViewHolder(inflater.inflate(R.layout.bottom_menu_item, parent, false))
             }
 
         }
