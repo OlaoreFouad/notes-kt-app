@@ -40,7 +40,7 @@ class NoteRepository(application: Application) {
     fun getNote(id: Long): Note? {
         var note: Note? = null
         uiScope.launch {
-            note = executeRead { dao.getNote(id) }
+          note = executeRead { dao.getNote(id) }
         }
         return note
     }

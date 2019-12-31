@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dev.foodie.notes.activities.ViewEditActivity
 import dev.foodie.notes.adapters.NoteAdapter
 import dev.foodie.notes.databinding.ActivityMainBinding
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE = 0
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: NoteAdapter
+    private lateinit var bottomSheetFragment: BottomSheetFragment
+
+    private var deletedNote: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +53,12 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("note", note)
                     startActivityForResult(intent, REQUEST_CODE)
                 } else {
-                    val bottomSheetFragment = BottomSheetFragment { actionId, noteId ->
+                    bottomSheetFragment = BottomSheetFragment { actionId, noteId ->
+                        bottomSheetFragment.dismiss()
                         when(actionId) {
                             Constants.BOOKMARK -> {
-
+                                Log.d("App", "Note Id is: $noteId")
+                                bookmark(noteId)
                             }
                             Constants.SHARE -> {
                                 // do shit
@@ -64,13 +70,15 @@ class MainActivity : AppCompatActivity() {
                                 // do shit
                             }
                             Constants.DELETE -> {
-                                // do shit
+                                delete(noteId)
                             }
                         }
                     }
                     val bundle = Bundle()
                     bundle.putSerializable("note", note)
+                    bundle.putLong("id", note.id)
                     bottomSheetFragment.arguments = bundle
+                    bottomSheetFragment.show(supportFragmentManager, "bottomSheetModalFragment")
                 }
             }
         })
@@ -122,8 +130,13 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun bookmark(noteId: Int) {
-
+    fun bookmark(noteId: Long) {
+        val n = viewModel.getNote(noteId)
+        Log.d("App", n.toString())
+        n?.apply {
+            isBookmarked = !isBookmarked
+            viewModel.updateNote(this)
+        }
     }
 
     fun share(noteId: Int) {
@@ -132,6 +145,14 @@ class MainActivity : AppCompatActivity() {
 
     fun lock(noteId: Int) {
 
+    }
+
+    fun delete(noteId: Long) {
+        deletedNote = viewModel.getNote(noteId)
+        viewModel.deleteNote(deletedNote!!)
+        Snackbar.make(binding.root, "Note Deleted Successfully", Snackbar.LENGTH_LONG).setAction("Undo") {
+            viewModel.addNote(deletedNote!!)
+        }
     }
 
     /*private fun refresh() {

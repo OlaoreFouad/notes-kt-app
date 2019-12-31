@@ -18,11 +18,13 @@ object Constants {
 
     val TAG_MAP = mapOf(1 to UNCATEGORIZED, 2 to PERSONAL, 3 to WORK, 4 to STUDY, 5 to FAMIY)
 
-    val MENUS = listOf(
-        Menu("Bookmark", R.drawable.bookmark_border, BOOKMARK),
-        Menu("Share", R.drawable.share, SHARE),
-        Menu("Lock", R.drawable.lock, LOCK),
-        Menu("Archive", R.drawable.archive, ARCHIVE),
-        Menu("Delete", R.drawable.delete, DELETE)
-    )
+    fun getMenus(isBookmarked: Boolean): List<Menu> {
+        return listOf(
+            Menu(if (isBookmarked) "Remove Bookmark" else "Bookmark", R.drawable.bookmark_border, BOOKMARK),
+            Menu("Share", R.drawable.share, SHARE),
+            Menu("Lock", R.drawable.lock, LOCK),
+            Menu("Archive", R.drawable.archive, ARCHIVE),
+            Menu("Delete", R.drawable.delete, DELETE)
+        )
+    }
 }

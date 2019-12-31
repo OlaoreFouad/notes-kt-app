@@ -9,11 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.foodie.notes.R
 import dev.foodie.notes.models.Menu
+import dev.foodie.notes.utils.Constants
 import dev.foodie.notes.views.BottomMenuItem
 
-class MenuAdapter(val ctx: Context, val menus: List<Menu>, val actionSelectedListener: (Int, Int) -> Unit) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+class MenuAdapter(val ctx: Context, val menus: List<Menu>, val actionSelectedListener: (Int, Long) -> Unit, val noteId: Long) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder = MenuViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder = MenuViewHolder.from(parent, actionSelectedListener, noteId)
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         holder.bind(menus[position])
@@ -21,7 +22,24 @@ class MenuAdapter(val ctx: Context, val menus: List<Menu>, val actionSelectedLis
 
     override fun getItemCount() = menus.size
 
-    class MenuViewHolder private constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class MenuViewHolder
+    private constructor(itemView: View, val actionSelectedListener: (Int, Long) -> Unit, val noteId: Long)
+        : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            actionSelectedListener(when(adapterPosition+1) {
+                Constants.BOOKMARK -> 1
+                Constants.SHARE -> 2
+                Constants.LOCK -> 3
+                Constants.ARCHIVE -> 4
+                Constants.DELETE -> 5
+                else -> 1
+            }, noteId)
+        }
 
         fun bind(menu: Menu) {
             val image = itemView.findViewById<ImageView>(R.id.menu_image)
@@ -38,9 +56,9 @@ class MenuAdapter(val ctx: Context, val menus: List<Menu>, val actionSelectedLis
 
         companion object {
 
-            fun from(parent: ViewGroup) : MenuViewHolder {
+            fun from(parent: ViewGroup, actionSelectedListener: (Int, Long) -> Unit, noteId: Long) : MenuViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                return MenuViewHolder(inflater.inflate(R.layout.bottom_menu_item, parent, false))
+                return MenuViewHolder(inflater.inflate(R.layout.bottom_menu_item, parent, false), actionSelectedListener, noteId)
             }
 
         }

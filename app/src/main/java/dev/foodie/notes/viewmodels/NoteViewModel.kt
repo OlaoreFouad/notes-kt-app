@@ -16,6 +16,8 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getNotes() = repo.getAllNotes()
 
+    fun getNote(id: Long) = repo.getNote(id)
+
     fun getNotesBy(param: String) = repo.getNotesByParam(param)
 
     fun deleteNote(note: Note) = repo.deleteNote(note)
