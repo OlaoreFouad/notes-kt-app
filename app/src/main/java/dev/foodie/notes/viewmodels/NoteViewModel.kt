@@ -23,4 +23,9 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteNote(note: Note) = repo.deleteNote(note)
 
     fun deleteAllNotes() = repo.deleteAllNotes()
+
+//    override fun onCleared() {
+//        super.onCleared()
+//        repo.job.cancel()
+//    }
 }

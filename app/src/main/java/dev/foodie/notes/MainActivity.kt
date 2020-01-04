@@ -56,10 +56,7 @@ class MainActivity : AppCompatActivity() {
                     bottomSheetFragment = BottomSheetFragment { actionId, noteId ->
                         bottomSheetFragment.dismiss()
                         when(actionId) {
-                            Constants.BOOKMARK -> {
-                                Log.d("App", "Note Id is: $noteId")
-                                bookmark(noteId)
-                            }
+                            Constants.BOOKMARK -> bookmark(note)
                             Constants.SHARE -> {
                                 // do shit
                             }
@@ -113,7 +110,6 @@ class MainActivity : AppCompatActivity() {
 
                 Log.d("MainActivity", "Note: $note")
                 if (editMode) viewModel.updateNote(note) else viewModel.addNote(note)
-//                refresh()
             }
         }
     }
@@ -130,13 +126,9 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun bookmark(noteId: Long) {
-        val n = viewModel.getNote(noteId)
-        Log.d("App", n.toString())
-        n?.apply {
-            isBookmarked = !isBookmarked
-            viewModel.updateNote(this)
-        }
+    fun bookmark(note: Note) {
+        note.isBookmarked = !note.isBookmarked
+        viewModel.updateNote(note)
     }
 
     fun share(noteId: Int) {

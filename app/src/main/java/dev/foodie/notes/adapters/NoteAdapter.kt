@@ -84,7 +84,10 @@ class NoteAdapter
 
 class NoteDiffUtilCallback : DiffUtil.ItemCallback<Note>() {
     override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-        return oldItem.title == newItem.title && oldItem.tags == newItem.tags && oldItem.isBookmarked == newItem.isBookmarked
+        return oldItem.title == newItem.title
+                && oldItem.tags == newItem.tags
+                && oldItem.isBookmarked == newItem.isBookmarked
+                && oldItem.content == newItem.content
     }
 
     override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
