@@ -20,14 +20,12 @@ class NoteRepository(application: Application) {
         database = NoteDatabase.getInstance(application)
         dao = database?.noteDao!!
         allNotes = dao.getNotes()
-        Log.d("App", "Dao that gets the notes: ${ dao.hashCode() }")
     }
 
     fun insert(note: Note) {
         uiScope.launch {
             executeWrite(note) {
                 dao.insert(it)
-                Log.d("App", "Dao that inserts the notes: ${ dao.hashCode() }")
             }
         }
     }
@@ -36,7 +34,6 @@ class NoteRepository(application: Application) {
         uiScope.launch {
             executeWrite(note) {
                 dao.update(it)
-                Log.d("App", "Dao that gets the updates: ${ dao.hashCode() }")
             }
         }
     }
@@ -85,7 +82,6 @@ class NoteRepository(application: Application) {
 
     private fun executeRead(id: Long): Deferred<Note?> {
         val asyncJob: Deferred<Note?> = uiScope.async {
-            Log.d("App", "Dao that updates - execute read! the notes: ${ dao.hashCode() }")
             dao.getNote(id)
         }
         return asyncJob

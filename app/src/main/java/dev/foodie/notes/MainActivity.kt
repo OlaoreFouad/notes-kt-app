@@ -94,9 +94,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE)
         }
-
-       // val bottomBar = BottomSheetFragment()
-        // bottomBar.show(supportFragmentManager, "bottomBar")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -128,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
     fun bookmark(note: Note) {
         note.isBookmarked = !note.isBookmarked
-        viewModel.updateNote(note)
+        viewModel.updateNote(note).let { adapter.notifyDataSetChanged() }
     }
 
     fun share(noteId: Int) {
