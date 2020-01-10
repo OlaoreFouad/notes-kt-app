@@ -31,6 +31,12 @@
 
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
 
+    <style name="TransparentButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:colorButtonNormal">@color/white</item>
+        <item name="android:colorAccent">@android:color/white</item>
+        <item name="android:colorControlHighlight">@color/colorPrimary</item>
+    </style>
+
     <!--<style name="ProgressDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">-->
         <!--<item name="android:windowBackground">@color/automile_transparent</item>-->
     <!--</style>-->

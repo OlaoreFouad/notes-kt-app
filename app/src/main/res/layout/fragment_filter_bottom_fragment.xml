@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+	<variable
+	  name="currentFilter"
+	  type="Integer" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:id="@+id/start_guideline"
+	  android:layout_width="wrap_content"
+	  android:layout_height="match_parent"
+	  android:orientation="vertical"
+	  app:layout_constraintGuide_begin="16dp" />
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:id="@+id/end_guideline"
+	  android:layout_width="wrap_content"
+	  android:layout_height="match_parent"
+	  android:orientation="vertical"
+	  app:layout_constraintGuide_end="16dp" />
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:id="@+id/top_guideline"
+	  android:layout_width="match_parent"
+	  android:layout_height="wrap_content"
+	  android:orientation="horizontal"
+	  app:layout_constraintGuide_begin="10dp" />
+
+	<TextView
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:text="@string/sorts_and_filters_text"
+	  app:layout_constraintBottom_toTopOf="@id/views_spacer"
+	  android:textColor="@android:color/black"
+	  android:textSize="18sp"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  app:layout_constraintTop_toBottomOf="@id/top_guideline" />
+
+	<Button
+	  android:id="@+id/done_button"
+	  style="@style/TransparentButton"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:text="@string/done_text"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  app:layout_constraintTop_toBottomOf="@id/top_guideline" />
+
+	<View
+	  android:id="@+id/views_spacer"
+	  android:layout_width="match_parent"
+	  android:layout_height="1dp"
+	  android:background="#e1e1e1"
+	  app:layout_constraintTop_toBottomOf="@id/done_button" />
+
+	<TextView
+	  android:layout_width="wrap_content"
+	  android:id="@+id/sort_activator"
+	  android:text="@string/sort_by_text"
+	  app:layout_constraintTop_toBottomOf="@id/views_spacer"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  android:layout_marginTop="8dp"
+	  app:layout_constraintEnd_toStartOf="@id/tag_activator"
+	  android:textColor="@android:color/white"
+	  android:background="@{ currentFilter == 0 ? @drawable/sort_filter_selected : @drawable/sort_filter_unselected }"
+	  android:paddingLeft="18dp"
+	  android:paddingRight="18dp"
+	  android:paddingTop="6dp"
+	  android:paddingBottom="6dp"
+	  android:layout_height="wrap_content" />
+
+	<TextView
+	  android:layout_width="wrap_content"
+	  android:id="@+id/tag_activator"
+	  android:text="@string/tags_text"
+	  app:layout_constraintStart_toEndOf="@id/sort_activator"
+	  android:layout_marginTop="8dp"
+	  android:background="@{ currentFilter == 1 ? @drawable/sort_filter_selected : @drawable/sort_filter_unselected }"
+	  android:paddingLeft="18dp"
+	  android:textColor="@color/colorAccent"
+	  android:paddingRight="18dp"
+	  android:paddingTop="6dp"
+	  android:paddingBottom="6dp"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  app:layout_constraintTop_toBottomOf="@id/views_spacer"
+	  android:layout_height="wrap_content" />
+
+	<androidx.recyclerview.widget.RecyclerView
+	  app:layout_constraintTop_toBottomOf="@id/sort_activator"
+	  android:layout_width="0dp"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  android:id="@+id/sort_list"
+	  android:layout_height="wrap_content" />
+
+	<androidx.recyclerview.widget.RecyclerView
+	  app:layout_constraintTop_toBottomOf="@id/sort_activator"
+	  android:layout_width="0dp"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  android:id="@+id/tags_list"
+	  android:layout_height="wrap_content" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -16,6 +16,7 @@ import dev.foodie.notes.activities.ViewEditActivity
 import dev.foodie.notes.adapters.NoteAdapter
 import dev.foodie.notes.databinding.ActivityMainBinding
 import dev.foodie.notes.fragments.BottomSheetFragment
+import dev.foodie.notes.fragments.FilterBottomSheetFragment
 import dev.foodie.notes.listeners.OnNoteSelectedListener
 import dev.foodie.notes.models.Note
 import dev.foodie.notes.utils.Constants
@@ -94,6 +95,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE)
         }
+
+        val bottomBar = FilterBottomSheetFragment()
+        bottomBar.show(supportFragmentManager, "bottomBar")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

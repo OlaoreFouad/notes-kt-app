@@ -6,5 +6,11 @@
 	<item name="android:navigationBarColor">@color/white</item>
   </style>
 
+  <style name="TransparentButton" parent="Widget.AppCompat.Button.Colored">
+	<item name="android:colorButtonNormal">@android:color/white</item>
+	<item name="android:colorAccent">@android:color/white</item>
+	<item name="android:colorControlHighlight">@color/colorPrimary</item>
+  </style>
+
 
 </resources>

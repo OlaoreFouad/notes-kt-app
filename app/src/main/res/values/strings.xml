@@ -26,5 +26,10 @@
 
   <string name="created_modified_text_p">Created 4 Jul 2017 21:04 - Modified 16 Jul 2019 18:56</string>
   <string name="created_modified_text">Created %1$s - Modified %2$s</string>
+  <string name="sorts_and_filters_text">Sorts and Filters</string>
+  <string name="done_text">Done</string>
+  <string name="sort_by_text">Sort By</string>
+  <string name="tags_text">Tags</string>
+  <string name="all_notes_text">All Notes</string>
 
 </resources>

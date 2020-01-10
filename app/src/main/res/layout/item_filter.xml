@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+	<variable
+	  name="isSelected"
+	  type="Boolean" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:layout_width="wrap_content"
+	  android:layout_height="match_parent"
+	  android:orientation="vertical"
+	  android:id="@+id/start_guideline"
+	  app:layout_constraintGuide_begin="16dp" />
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:layout_width="wrap_content"
+	  android:layout_height="match_parent"
+	  android:orientation="vertical"
+	  android:id="@+id/end_guideline"
+	  app:layout_constraintGuide_end="16dp" />
+
+	<androidx.constraintlayout.widget.Guideline
+	  android:layout_width="match_parent"
+	  android:layout_height="wrap_content"
+	  android:orientation="horizontal"
+	  android:id="@+id/top_guideline"
+	  app:layout_constraintGuide_begin="8dp" />
+
+	<TextView
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:textColor="@android:color/black"
+	  android:id="@+id/filter_name"
+	  android:textSize="18sp"
+	  app:layout_constraintTop_toBottomOf="@id/top_guideline"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline"
+	  android:text="@string/all_notes_text" />
+
+	<ImageView
+	  android:layout_width="35dp"
+	  android:layout_height="35sp"
+	  android:src="@drawable/checked"
+	  android:visibility="invisible"
+	  android:id="@+id/filter_image"
+	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
+	  app:layout_constraintTop_toBottomOf="@id/top_guideline" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
