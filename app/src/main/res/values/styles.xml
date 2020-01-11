@@ -31,11 +31,12 @@
 
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
 
-    <style name="TransparentButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:colorButtonNormal">@color/white</item>
-        <item name="android:colorAccent">@android:color/white</item>
-        <item name="android:colorControlHighlight">@color/colorPrimary</item>
-    </style>
+  <style name="TransparentButton" parent="Widget.AppCompat.Button.Colored">
+	<item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+	<item name="android:textColor">@color/colorPrimaryDark</item>
+	<item name="android:colorControlHighlight">@android:color/white</item>
+	<item name="android:background">@android:color/transparent</item>
+  </style>
 
     <!--<style name="ProgressDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">-->
         <!--<item name="android:windowBackground">@color/automile_transparent</item>-->

@@ -7,9 +7,9 @@
   </style>
 
   <style name="TransparentButton" parent="Widget.AppCompat.Button.Colored">
-	<item name="android:colorButtonNormal">@android:color/white</item>
-	<item name="android:colorAccent">@android:color/white</item>
-	<item name="android:colorControlHighlight">@color/colorPrimary</item>
+	<item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+	<item name="android:textColor">@color/colorPrimaryDark</item>
+	<item name="android:colorControlHighlight">@android:color/white</item>
   </style>
 
 

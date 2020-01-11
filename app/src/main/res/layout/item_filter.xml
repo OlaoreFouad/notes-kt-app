@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 	<variable
@@ -34,23 +35,30 @@
 	  app:layout_constraintGuide_begin="8dp" />
 
 	<TextView
-	  android:layout_width="wrap_content"
+	  android:layout_width="0dp"
 	  android:layout_height="wrap_content"
 	  android:textColor="@android:color/black"
 	  android:id="@+id/filter_name"
 	  android:textSize="18sp"
 	  app:layout_constraintTop_toBottomOf="@id/top_guideline"
-	  app:layout_constraintStart_toEndOf="@id/start_guideline"
-	  android:text="@string/all_notes_text" />
+	  tools:text="All Notes"
+	  app:layout_constraintStart_toEndOf="@id/start_guideline" />
 
 	<ImageView
 	  android:layout_width="35dp"
 	  android:layout_height="35sp"
 	  android:src="@drawable/checked"
-	  android:visibility="invisible"
 	  android:id="@+id/filter_image"
+	  android:visibility="invisible"
 	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
-	  app:layout_constraintTop_toBottomOf="@id/top_guideline" />
+	  app:layout_constraintTop_toBottomOf="@id/top_guideline"/>
+
+	<View
+	  android:layout_width="match_parent"
+	  app:layout_constraintTop_toBottomOf="@id/filter_name"
+	  android:layout_marginEnd="20dp"
+	  android:background="@android:color/transparent"
+	  android:layout_height=".5dp"/>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,6 +1,8 @@
 package dev.foodie.notes.fragments
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,24 +48,31 @@ class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_filter_bottom_fragment, container, false)
 
+        initializeTagsList()
+        initializeSortList()
+        currentFilter = 0
+        binding.currentFilter = currentFilter
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeSortList()
-        initializeTagsList()
-    }
-
-    private fun setCurrentFilter() {
-        when(currentFilter) {
-            0 -> {}
-            1 -> {}
+        binding.sortActivator.setOnClickListener {
+            binding.currentFilter = 0
+            binding.sortActivator.setTextColor(Color.WHITE)
+            binding.tagActivator.setTextColor(resources.getColor(R.color.colorAccent))
+        }
+        binding.tagActivator.setOnClickListener {
+            binding.currentFilter = 1
+            binding.tagActivator.setTextColor(Color.WHITE)
+            binding.sortActivator.setTextColor(resources.getColor(R.color.colorAccent))
         }
     }
 
     private fun initializeSortList() {
         sortFilterAdapter = FilterAdapter(initialSortList, activity!!) { selectedFilter ->
+            Log.d("App", "$selectedFilter")
             selectedSortFilter = selectedFilter
             initialSortList.forEach { it.isSelected = false }
             initialSortList[selectedSortFilter].isSelected = true
@@ -73,8 +82,9 @@ class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
         binding.sortList.apply {
             layoutManager = LinearLayoutManager(activity!!)
             setHasFixedSize(true)
-            adapter = sortFilterAdapter
+            adapter = this@FilterBottomSheetFragment.sortFilterAdapter
         }
+        sortFilterAdapter.submitList(initialSortList)
     }
 
     private fun initializeTagsList() {
@@ -82,14 +92,16 @@ class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
             selectedTagFilter = selectedFilter
             initialTagsList.forEach { it.isSelected = false }
             initialTagsList[selectedTagFilter].isSelected = true
+            Log.d("App", "${ initialTagsList }")
             tagFilterAdapter.submitList(initialTagsList)
         }
 
         binding.tagsList.apply {
             layoutManager = LinearLayoutManager(activity!!)
             setHasFixedSize(true)
-            adapter = tagFilterAdapter
+            adapter = this@FilterBottomSheetFragment.tagFilterAdapter
         }
+        tagFilterAdapter.submitList(initialTagsList)
     }
 
 

@@ -8,6 +8,8 @@
 	  name="currentFilter"
 	  type="Integer" />
 
+	<import type="android.view.View" alias="V" />
+
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +49,9 @@
 
 	<Button
 	  android:id="@+id/done_button"
-	  style="@style/TransparentButton"
+	  android:textColor="@color/colorPrimaryDark"
+	  android:textStyle="bold"
+	  android:background="@android:color/transparent"
 	  android:layout_width="wrap_content"
 	  android:layout_height="wrap_content"
 	  android:text="@string/done_text"
@@ -96,6 +100,7 @@
 	<androidx.recyclerview.widget.RecyclerView
 	  app:layout_constraintTop_toBottomOf="@id/sort_activator"
 	  android:layout_width="0dp"
+	  android:visibility="@{ currentFilter == 0 ? V.VISIBLE : V.GONE }"
 	  app:layout_constraintStart_toEndOf="@id/start_guideline"
 	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
 	  android:id="@+id/sort_list"
@@ -104,6 +109,7 @@
 	<androidx.recyclerview.widget.RecyclerView
 	  app:layout_constraintTop_toBottomOf="@id/sort_activator"
 	  android:layout_width="0dp"
+	  android:visibility="@{ currentFilter == 1 ? V.VISIBLE : V.GONE }"
 	  app:layout_constraintStart_toEndOf="@id/start_guideline"
 	  app:layout_constraintEnd_toStartOf="@id/end_guideline"
 	  android:id="@+id/tags_list"
