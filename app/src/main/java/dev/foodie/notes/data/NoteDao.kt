@@ -22,10 +22,10 @@ interface NoteDao {
     @Query("SELECT * FROM notes_table ORDER BY lastModified DESC")
     fun getNotesByDateModified(): LiveData<List<Note>>
 
-    @Query("SELECT * FROM notes_table ORDER BY title")
+    @Query("SELECT * FROM notes_table ORDER BY title DESC")
     fun getNotesByTitle(): LiveData<List<Note>>
 
-    @Query("SELECT * FROM notes_table WHERE tags LIKE '%' || :tag || '%'")
+    @Query("SELECT * FROM notes_table WHERE tags = :tag")
     fun getNotesByTag(tag: String): LiveData<List<Note>>
 
     @Delete

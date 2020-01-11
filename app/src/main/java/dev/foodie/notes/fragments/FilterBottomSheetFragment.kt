@@ -15,13 +15,15 @@ import dev.foodie.notes.databinding.FragmentFilterBottomFragmentBinding
 import dev.foodie.notes.dialogs.RoundedBottomSheetDialogFragment
 import dev.foodie.notes.utils.Constants
 
-class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
+class FilterBottomSheetFragment
+    (private var selectedSortFilter: Int, private var selectedTagFilter: Int, val filtersSelectedListener: (Pair<Int, Int>) -> Unit)
+    : RoundedBottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentFilterBottomFragmentBinding
     private var currentFilter: Int = 0
 
-    private val initialTagsList = listOf(
-        Filter("All Notes", Constants.BY_ALL_NOTES, true),
+    private val initialTagsList = mutableListOf(
+        Filter("All Notes", Constants.BY_ALL_NOTES, false),
         Filter(Constants.WORK, Constants.BY_WORK, false),
         Filter(Constants.PERSONAL, Constants.BY_PERSONAL, false),
         Filter(Constants.STUDY, Constants.BY_STUDY, false),
@@ -29,14 +31,11 @@ class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
         Filter(Constants.FAMIY, Constants.BY_FAMILY, false)
     )
 
-    private val initialSortList = listOf(
-        Filter("Date Added", Constants.BY_DATE_ADDED, true),
+    private val initialSortList = mutableListOf(
+        Filter("Date Added", Constants.BY_DATE_ADDED, false),
         Filter("Date Modified", Constants.BY_DATE_MODIFIED, false),
         Filter("Title", Constants.BY_TITLE, false)
     )
-
-    var selectedSortFilter = 0
-    var selectedTagFilter = 0
 
     private lateinit var sortFilterAdapter: FilterAdapter
     private lateinit var tagFilterAdapter: FilterAdapter
@@ -47,6 +46,8 @@ class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_filter_bottom_fragment, container, false)
+        initialSortList[selectedSortFilter].isSelected = true
+        initialTagsList[selectedTagFilter].isSelected = true
 
         initializeTagsList()
         initializeSortList()
@@ -68,15 +69,19 @@ class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
             binding.tagActivator.setTextColor(Color.WHITE)
             binding.sortActivator.setTextColor(resources.getColor(R.color.colorAccent))
         }
+        binding.doneButton.setOnClickListener {
+            dismiss()
+            filtersSelectedListener.invoke(selectedSortFilter to selectedTagFilter)
+        }
     }
 
     private fun initializeSortList() {
         sortFilterAdapter = FilterAdapter(initialSortList, activity!!) { selectedFilter ->
-            Log.d("App", "$selectedFilter")
             selectedSortFilter = selectedFilter
             initialSortList.forEach { it.isSelected = false }
-            initialSortList[selectedSortFilter].isSelected = true
+            initialSortList[selectedFilter].isSelected = true
             sortFilterAdapter.submitList(initialSortList)
+            sortFilterAdapter.notifyDataSetChanged()
         }
 
         binding.sortList.apply {
@@ -92,8 +97,8 @@ class FilterBottomSheetFragment() : RoundedBottomSheetDialogFragment() {
             selectedTagFilter = selectedFilter
             initialTagsList.forEach { it.isSelected = false }
             initialTagsList[selectedTagFilter].isSelected = true
-            Log.d("App", "${ initialTagsList }")
             tagFilterAdapter.submitList(initialTagsList)
+            tagFilterAdapter.notifyDataSetChanged()
         }
 
         binding.tagsList.apply {

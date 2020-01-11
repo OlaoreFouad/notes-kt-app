@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,10 +31,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModelFactory: NoteViewModelFactory
     private val TAG = "MainActivity"
 
+    private val sortLiveData = mutableListOf<LiveData<List<Note>>?>()
+
     private val REQUEST_CODE = 0
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: NoteAdapter
     private lateinit var bottomSheetFragment: BottomSheetFragment
+
+    private val obs = Observer<List<Note>> { adapter.submitList(it) }
+
+    private var selectedSortFilter = Constants.BY_DATE_ADDED
+    private var selectedTagFilter = Constants.BY_ALL_NOTES
 
     private var deletedNote: Note? = null
 
@@ -45,6 +53,10 @@ class MainActivity : AppCompatActivity() {
         viewModelFactory = NoteViewModelFactory(application)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoteViewModel::class.java)
 
+        viewModel.getNotes().observe(this, Observer {
+            adapter.submitList(it)
+        })
+
         adapter = NoteAdapter(applicationContext, object : OnNoteSelectedListener {
             override fun noteSelected(position: Int, src: Int) {
                 val note = adapter.currentList[position]
@@ -54,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("note", note)
                     startActivityForResult(intent, REQUEST_CODE)
                 } else {
-                    bottomSheetFragment = BottomSheetFragment { actionId, noteId ->
+                    bottomSheetFragment = BottomSheetFragment { actionId, _ ->
                         bottomSheetFragment.dismiss()
                         when(actionId) {
                             Constants.BOOKMARK -> bookmark(note)
@@ -67,9 +79,7 @@ class MainActivity : AppCompatActivity() {
                             Constants.ARCHIVE -> {
                                 // do shit
                             }
-                            Constants.DELETE -> {
-                                delete(noteId)
-                            }
+                            Constants.DELETE -> delete(note)
                         }
                     }
                     val bundle = Bundle()
@@ -87,17 +97,14 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
-        viewModel.getNotes()?.observe(this, Observer {
-            adapter.submitList(it)
-        })
+        selectedSortFilter = Constants.BY_DATE_ADDED
 
         add_note_fab.setOnClickListener {
             val intent = Intent(this@MainActivity, ViewEditActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE)
         }
 
-        val bottomBar = FilterBottomSheetFragment()
-        bottomBar.show(supportFragmentManager, "bottomBar")
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -123,8 +130,39 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item!!.itemId) {
             R.id.nav_archived -> item.isChecked = !item.isChecked
+            R.id.nav_filter -> {
+                val bottomBar = FilterBottomSheetFragment(selectedSortFilter, selectedTagFilter) {
+                    selectedSortFilter = it.first
+                    selectedTagFilter = it.second
+
+                    setUpSortMethod()
+                }
+                bottomBar.show(supportFragmentManager, "bottomBar")
+            }
         }
         return true
+    }
+
+    private fun setUpSortMethod() {
+        Log.d("App", "Set up sort method..")
+        if (selectedSortFilter != Constants.BY_DATE_ADDED) {
+            var param = when(selectedSortFilter) {
+                Constants.BY_DATE_MODIFIED -> "dateModified"
+                Constants.BY_TITLE -> "title"
+                else -> "title"
+            }
+            Log.d("App", "Data gotten by param: $param")
+            viewModel.getNotes().observe(this, Observer {
+                Log.d("App", "Data gotten by param: $param")
+                it.forEach { note -> Log.d("App", "$note") }
+                adapter.submitList(it)
+            })
+        } else {
+            viewModel.getNotes().observe(this, Observer {
+                adapter.submitList(it)
+            })
+        }
+        adapter.notifyDataSetChanged()
     }
 
     fun bookmark(note: Note) {
@@ -140,12 +178,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun delete(noteId: Long) {
-        deletedNote = viewModel.getNote(noteId)
-        viewModel.deleteNote(deletedNote!!)
-        Snackbar.make(binding.root, "Note Deleted Successfully", Snackbar.LENGTH_LONG).setAction("Undo") {
-            viewModel.addNote(deletedNote!!)
-        }
+    fun delete(note: Note) {
+        viewModel.deleteNote(note).let { adapter.notifyDataSetChanged() }
+        Snackbar.make(
+            binding.root, "Note Deleted Successfully", Snackbar.LENGTH_LONG
+        ).setAction("Undo") {
+            viewModel.addNote(note)
+        }.show()
     }
 
     /*private fun refresh() {

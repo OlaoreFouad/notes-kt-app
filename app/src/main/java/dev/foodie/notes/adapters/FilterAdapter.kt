@@ -1,6 +1,7 @@
 package dev.foodie.notes.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,13 +29,15 @@ class FilterAdapter(val filters: List<Filter>, val ctx: Context, val onFilterSel
         }
 
         fun bind(filter: Filter) {
-            itemFilterBinding.isSelected = filter.isSelected
             itemFilterBinding.filterName.text = filter.name
-            if (filter.isSelected) {
-                itemFilterBinding.filterName.setTextColor(
-                    itemFilterBinding.root.resources.getColor(R.color.colorPrimaryDark)
-                )
-                itemFilterBinding.filterImage.visibility = View.VISIBLE
+            with(itemFilterBinding) {
+                if (filter.isSelected) {
+                    filterName.setTextColor(itemFilterBinding.root.resources.getColor(R.color.colorPrimaryDark))
+                    filterImage.visibility = View.VISIBLE
+                } else {
+                    filterName.setTextColor(Color.BLACK)
+                    filterImage.visibility = View.INVISIBLE
+                }
             }
         }
 
@@ -63,6 +66,6 @@ class FilterDiffUtilCallback() : DiffUtil.ItemCallback<Filter>() {
     }
 
     override fun areContentsTheSame(oldItem: Filter, newItem: Filter): Boolean {
-        return oldItem.name == oldItem.name && oldItem.isSelected == oldItem.isSelected
+        return oldItem.id == oldItem.id && oldItem.isSelected == oldItem.isSelected
     }
 }

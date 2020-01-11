@@ -40,19 +40,9 @@ class NoteRepository(application: Application) {
 
     fun getNote(id: Long): Note? = runBlocking { executeRead(id).await() }
 
-    fun getNotesByParam(param: String): LiveData<List<Note>>? {
-        var notes: LiveData<List<Note>>? = null
-        uiScope.launch {
-            notes = executeReadByParam("param")
-        }
-        return notes
-    }
+    fun getNotesByParam(param: String): LiveData<List<Note>>? = runBlocking {executeReadByParam(param).await() }
 
-    fun deleteNote(note: Note) {
-        uiScope.launch {
-            executeDeleteNote(note)
-        }
-    }
+    fun deleteNote(note: Note) = runBlocking { executeDeleteNote(note) }
 
     fun deleteAllNotes() {
         uiScope.launch {
@@ -87,17 +77,20 @@ class NoteRepository(application: Application) {
         return asyncJob
     }
 
-    private suspend fun executeReadByParam(param: String, tag: String = ""): LiveData<List<Note>> {
-        var data: LiveData<List<Note>>? =  null
-        withContext(Dispatchers.IO) {
-            data = when(param) {
+    private suspend fun executeReadByParam(param: String, tag: String = ""): Deferred<LiveData<List<Note>>?> {
+
+        val asyncJob: Deferred<LiveData<List<Note>>?> = uiScope.async {
+            val data = when(param) {
                 "title" -> dao.getNotesByTitle()
                 "dateModified" -> dao.getNotesByDateModified()
                 "tags" -> dao.getNotesByTag(tag)
                 else -> dao.getNotes()
             }
+
+            data
         }
-        return data!!
+
+        return asyncJob
     }
 
 }
