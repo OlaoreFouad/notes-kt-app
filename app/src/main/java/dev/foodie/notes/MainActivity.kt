@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("note", note)
                     startActivityForResult(intent, REQUEST_CODE)
                 } else {
-                    bottomSheetFragment = BottomSheetFragment { actionId, _ ->
+                    bottomSheetFragment = BottomSheetFragment { actionId, noteId ->
+                        Log.d("App", "Note: ${ viewModel.getNote(noteId) }")
                         bottomSheetFragment.dismiss()
                         when(actionId) {
                             Constants.BOOKMARK -> bookmark(note)
@@ -144,6 +145,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpSortMethod() {
+        Log.d("App", "Note: ${ viewModel.getNote(13L) }")
         Log.d("App", "Set up sort method..")
         if (selectedSortFilter != Constants.BY_DATE_ADDED) {
             var param = when(selectedSortFilter) {
@@ -152,10 +154,10 @@ class MainActivity : AppCompatActivity() {
                 else -> "title"
             }
             Log.d("App", "Data gotten by param: $param")
-            viewModel.getNotes().observe(this, Observer {
+                viewModel.getNotesBy(param)?.observe(this, Observer {
                 Log.d("App", "Data gotten by param: $param")
                 it.forEach { note -> Log.d("App", "$note") }
-                adapter.submitList(it)
+                //adapter.submitList(it)
             })
         } else {
             viewModel.getNotes().observe(this, Observer {
