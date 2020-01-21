@@ -24,6 +24,10 @@ import dev.foodie.notes.utils.Constants
 import dev.foodie.notes.viewmodels.NoteViewModel
 import dev.foodie.notes.viewmodels.NoteViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -136,6 +140,8 @@ class MainActivity : AppCompatActivity() {
                     selectedSortFilter = it.first
                     selectedTagFilter = it.second
 
+                    Log.d("App", "Coming from setupSortMethod")
+
                     setUpSortMethod()
                 }
                 bottomBar.show(supportFragmentManager, "bottomBar")
@@ -145,20 +151,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpSortMethod() {
-        Log.d("App", "Note: ${ viewModel.getNote(13L) }")
+        //Log.d("App", "Note 13L: ${ viewModel.getNote(13L) }")
         Log.d("App", "Set up sort method..")
         if (selectedSortFilter != Constants.BY_DATE_ADDED) {
-            var param = when(selectedSortFilter) {
+            val param = when(selectedSortFilter) {
                 Constants.BY_DATE_MODIFIED -> "dateModified"
                 Constants.BY_TITLE -> "title"
                 else -> "title"
             }
-            Log.d("App", "Data gotten by param: $param")
-                viewModel.getNotesBy(param)?.observe(this, Observer {
-                Log.d("App", "Data gotten by param: $param")
-                it.forEach { note -> Log.d("App", "$note") }
-                //adapter.submitList(it)
-            })
+            Log.d("App", "Data gotten by param: $param outside")
+            GlobalScope.launch(Dispatchers.Main) {
+                viewModel.getNotesBy("").collect {
+                    Log.d("App", "Data gotten by param: inside")
+                    it.forEach { note -> Log.d("App", "$note") }
+                }
+            }
         } else {
             viewModel.getNotes().observe(this, Observer {
                 adapter.submitList(it)

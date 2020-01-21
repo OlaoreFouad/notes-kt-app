@@ -3,6 +3,7 @@ package dev.foodie.notes.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import dev.foodie.notes.models.Note
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
@@ -20,13 +21,13 @@ interface NoteDao {
     fun getNote(id: Long): Note
 
     @Query("SELECT * FROM notes_table ORDER BY lastModified DESC")
-    fun getNotesByDateModified(): LiveData<List<Note>>
+    fun getNotesByDateModified(): Flow<List<Note>>
 
     @Query("SELECT * FROM notes_table ORDER BY title DESC")
-    fun getNotesByTitle(): LiveData<List<Note>>
+    fun getNotesByTitle(): Flow<List<Note>>
 
     @Query("SELECT * FROM notes_table WHERE tags = :tag")
-    fun getNotesByTag(tag: String): LiveData<List<Note>>
+    fun getNotesByTag(tag: String): Flow<List<Note>>
 
     @Delete
     fun deleteNote(note: Note)

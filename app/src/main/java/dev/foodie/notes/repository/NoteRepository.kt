@@ -7,6 +7,8 @@ import dev.foodie.notes.data.NoteDao
 import dev.foodie.notes.data.NoteDatabase
 import dev.foodie.notes.models.Note
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class NoteRepository(application: Application) {
     private var dao: NoteDao
@@ -40,7 +42,13 @@ class NoteRepository(application: Application) {
 
     fun getNote(id: Long): Note? = runBlocking { executeRead(id).await() }
 
-    fun getNotesByParam(param: String): LiveData<List<Note>>? = runBlocking { executeReadByParam(param).await() }
+    fun getNotesByParam(param: String): Flow<List<Note>> {
+        var flowData: Flow<List<Note>> = flowOf()
+        uiScope.launch {
+            flowData = executeReadByParam("").await()
+        }
+        return flowData
+    }
 
     fun deleteNote(note: Note) = runBlocking { executeDeleteNote(note) }
 
@@ -76,14 +84,9 @@ class NoteRepository(application: Application) {
         }
     }
 
-    private fun executeReadByParam(param: String, tag: String = ""): Deferred<LiveData<List<Note>>?> {
+    private suspend fun executeReadByParam(param: String, tag: String = ""): Deferred<Flow<List<Note>>> {
         return uiScope.async {
-            when(param) {
-                "title" -> dao.getNotesByTitle()
-                "dateModified" -> dao.getNotesByDateModified()
-                "tags" -> dao.getNotesByTag(tag)
-                else -> dao.getNotes()
-            }
+            dao.getNotesByDateModified()
         }
     }
 
