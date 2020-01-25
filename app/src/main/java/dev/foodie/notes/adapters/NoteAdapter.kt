@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +23,40 @@ import java.util.*
 
 class NoteAdapter
     (var ctx: Context, private val mOnNoteSelectedListener: OnNoteSelectedListener)
-    : ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteDiffUtilCallback()) {
+    : ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteDiffUtilCallback()), Filterable {
+
+    private val noteFilter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val filteredList = mutableListOf<Note>()
+
+            if (constraint == null || constraint.isEmpty()) {
+                filteredList.addAll(currentList)
+            } else {
+                val text = constraint.map {
+                    it.toString().trim()
+                }
+                currentList.forEach {
+                    if (
+                        it.title.trim().contains(text as CharSequence, true)
+                        || it.content.trim().contains(text as CharSequence, true)
+                            ) {
+                        filteredList.add(it)
+                    }
+                }
+            }
+
+            val res = FilterResults()
+            res.values = filteredList
+            return res
+
+        }
+
+        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+            currentList.clear()
+            submitList(p1?.values as List<Note>)
+            notifyDataSetChanged()
+        }
+    };
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder.from(parent, mOnNoteSelectedListener)
@@ -33,6 +68,10 @@ class NoteAdapter
     }
 
     override fun getItemCount() = currentList.size
+
+    override fun getFilter(): Filter {
+        return noteFilter
+    }
 
     class NoteViewHolder
         private constructor(

@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -129,6 +131,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+
+        val menuItem = menu?.findItem(R.id.nav_search)
+        val searchView = menuItem?.actionView as SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                adapter.filter.filter(newText)
+
+                return true
+            }
+        })
+
         return true
     }
 
@@ -142,7 +161,7 @@ class MainActivity : AppCompatActivity() {
 
                     Log.d("App", "Coming from setupSortMethod")
 
-                    setUpSortMethod()
+                    //setUpSortMethod()
                 }
                 bottomBar.show(supportFragmentManager, "bottomBar")
             }

@@ -21,7 +21,8 @@
 	android:id="@+id/nav_search"
 	android:icon="@drawable/search"
 	android:title="@string/search_text"
-	app:showAsAction="ifRoom" />
+	app:showAsAction="ifRoom"
+	app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
 
 </menu>
