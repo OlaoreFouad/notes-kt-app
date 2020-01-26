@@ -20,22 +20,33 @@ import dev.foodie.notes.listeners.OnNoteSelectedListener
 import dev.foodie.notes.models.Note
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class NoteAdapter
-    (var ctx: Context, private val mOnNoteSelectedListener: OnNoteSelectedListener)
+    (private var ctx: Context, private val mOnNoteSelectedListener: OnNoteSelectedListener)
     : ListAdapter<Note, NoteAdapter.NoteViewHolder>(NoteDiffUtilCallback()), Filterable {
+
+    var firstEmission: Int = 0
+
+    private var completeList: MutableList<Note>? = mutableListOf()
+
+    override fun submitList(list: MutableList<Note>?) {
+        super.submitList(list)
+        firstEmission++
+        if (firstEmission == 1) {
+            completeList?.addAll(list!!)
+        }
+    }
 
     private val noteFilter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filteredList = mutableListOf<Note>()
 
             if (constraint == null || constraint.isEmpty()) {
-                filteredList.addAll(currentList)
+                filteredList.addAll(completeList!!)
             } else {
-                val text = constraint.map {
-                    it.toString().trim()
-                }
-                currentList.forEach {
+                val text = constraint.toString().trim()
+                completeList!!.forEach {
                     if (
                         it.title.trim().contains(text as CharSequence, true)
                         || it.content.trim().contains(text as CharSequence, true)
@@ -45,6 +56,7 @@ class NoteAdapter
                 }
             }
 
+
             val res = FilterResults()
             res.values = filteredList
             return res
@@ -52,11 +64,11 @@ class NoteAdapter
         }
 
         override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
-            currentList.clear()
-            submitList(p1?.values as List<Note>)
+            val res = p1?.values as MutableList<Note>?
+            submitList(res)
             notifyDataSetChanged()
         }
-    };
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder.from(parent, mOnNoteSelectedListener)
@@ -72,6 +84,8 @@ class NoteAdapter
     override fun getFilter(): Filter {
         return noteFilter
     }
+
+    fun searchCompleted() = submitList(completeList)
 
     class NoteViewHolder
         private constructor(

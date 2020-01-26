@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: NoteAdapter
     private lateinit var bottomSheetFragment: BottomSheetFragment
 
-    private val obs = Observer<List<Note>> { adapter.submitList(it) }
+    private val obs = Observer<List<Note>> { adapter.submitList(it as MutableList<Note>) }
 
     private var selectedSortFilter = Constants.BY_DATE_ADDED
     private var selectedTagFilter = Constants.BY_ALL_NOTES
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoteViewModel::class.java)
 
         viewModel.getNotes().observe(this, Observer {
-            adapter.submitList(it)
+            adapter.submitList(it as MutableList<Note>)
         })
 
         adapter = NoteAdapter(applicationContext, object : OnNoteSelectedListener {
@@ -147,6 +147,10 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+        searchView.setOnCloseListener {
+            adapter.searchCompleted()
+            return@setOnCloseListener true
+        }
 
         return true
     }
@@ -187,7 +191,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             viewModel.getNotes().observe(this, Observer {
-                adapter.submitList(it)
+                adapter.submitList(it as MutableList<Note>)
             })
         }
         adapter.notifyDataSetChanged()
