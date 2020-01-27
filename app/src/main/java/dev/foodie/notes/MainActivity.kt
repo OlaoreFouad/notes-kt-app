@@ -7,13 +7,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ShareCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dev.foodie.notes.activities.ViewEditActivity
 import dev.foodie.notes.adapters.NoteAdapter
@@ -30,6 +35,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+
+const val NEXT_RELEASE_TEXT = "Available in the next release"
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,7 +67,12 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NoteViewModel::class.java)
 
         viewModel.getNotes().observe(this, Observer {
-            adapter.submitList(it as MutableList<Note>)
+            if (it.isEmpty()) {
+                binding.noNotesTextView.visibility = View.VISIBLE
+                binding.noteRecyclerView.visibility = View.GONE
+            } else {
+                adapter.submitList(it as MutableList<Note>)
+            }
         })
 
         adapter = NoteAdapter(applicationContext, object : OnNoteSelectedListener {
@@ -72,20 +84,13 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("note", note)
                     startActivityForResult(intent, REQUEST_CODE)
                 } else {
-                    bottomSheetFragment = BottomSheetFragment { actionId, noteId ->
-                        Log.d("App", "Note: ${ viewModel.getNote(noteId) }")
+                    bottomSheetFragment = BottomSheetFragment { actionId, _ ->
                         bottomSheetFragment.dismiss()
                         when(actionId) {
                             Constants.BOOKMARK -> bookmark(note)
-                            Constants.SHARE -> {
-                                // do shit
-                            }
-                            Constants.LOCK -> {
-                                // do shit
-                            }
-                            Constants.ARCHIVE -> {
-                                // do shit
-                            }
+                            Constants.SHARE -> share(note)
+                            Constants.LOCK -> showToast(NEXT_RELEASE_TEXT)
+                            Constants.ARCHIVE -> showToast(NEXT_RELEASE_TEXT)
                             Constants.DELETE -> delete(note)
                         }
                     }
@@ -123,7 +128,6 @@ class MainActivity : AppCompatActivity() {
                 note = getSerializable("note") as Note
                 editMode = getBoolean("editMode")
 
-                Log.d("MainActivity", "Note: $note")
                 if (editMode) viewModel.updateNote(note) else viewModel.addNote(note)
             }
         }
@@ -155,9 +159,16 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item!!.itemId) {
-            R.id.nav_archived -> item.isChecked = !item.isChecked
+            R.id.nav_archived -> {
+                item.isChecked = !item.isChecked
+                showToast(NEXT_RELEASE_TEXT)
+            }
             R.id.nav_filter -> {
                 val bottomBar = FilterBottomSheetFragment(selectedSortFilter, selectedTagFilter) {
                     selectedSortFilter = it.first
@@ -202,8 +213,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.updateNote(note).let { adapter.notifyDataSetChanged() }
     }
 
-    fun share(noteId: Int) {
-
+    fun share(note: Note) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.share_text_template, note.title, note.content))
+            type = "text/plain"
+        }
+        startActivity(Intent.createChooser(intent, null))
     }
 
     fun lock(noteId: Int) {

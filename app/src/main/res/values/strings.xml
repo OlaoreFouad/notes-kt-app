@@ -32,4 +32,7 @@
   <string name="tags_text">Tags</string>
   <string name="all_notes_text">All Notes</string>
 
+  <string name="share_text_template">%1$s \n\n %2$s \n\n #SharedFromNotes</string>
+  <string name="you_see_that_nothing_nclick_on_the_to_add_a_new_note">You see that?, nothing! \n <b>Click on the \'+\' to add a new note.</b></string>
+
 </resources>
