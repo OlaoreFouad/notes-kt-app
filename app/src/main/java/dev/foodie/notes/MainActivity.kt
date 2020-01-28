@@ -31,6 +31,7 @@ import dev.foodie.notes.utils.Constants
 import dev.foodie.notes.viewmodels.NoteViewModel
 import dev.foodie.notes.viewmodels.NoteViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
@@ -176,7 +177,7 @@ class MainActivity : AppCompatActivity() {
 
                     Log.d("App", "Coming from setupSortMethod")
 
-                    //setUpSortMethod()
+                    setUpSortMethod()
                 }
                 bottomBar.show(supportFragmentManager, "bottomBar")
             }
@@ -194,11 +195,13 @@ class MainActivity : AppCompatActivity() {
                 else -> "title"
             }
             Log.d("App", "Data gotten by param: $param outside")
-            GlobalScope.launch(Dispatchers.Main) {
-                viewModel.getNotesBy("").collect {
-                    Log.d("App", "Data gotten by param: inside")
+            CoroutineScope(Dispatchers.IO).launch {
+                Log.d("App", "Launching the coroutine with the param: $param")
+                viewModel.getNotesBy(param).collect {
+                    Log.d("App", "Size: ${ it.size }")
                     it.forEach { note -> Log.d("App", "$note") }
                 }
+                Log.d("App", "Completed the coroutine with the param: $param")
             }
         } else {
             viewModel.getNotes().observe(this, Observer {

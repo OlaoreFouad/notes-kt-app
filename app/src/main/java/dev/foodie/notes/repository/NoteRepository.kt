@@ -42,12 +42,25 @@ class NoteRepository(application: Application) {
 
     fun getNote(id: Long): Note? = runBlocking { executeRead(id).await() }
 
-    fun getNotesByParam(param: String): Flow<List<Note>> {
-        var flowData: Flow<List<Note>> = flowOf()
+    fun getNotesByParam(param: String, tag: String = ""): Flow<List<Note>> {
+        var flowData = flowOf<List<Note>>()
         uiScope.launch {
-            flowData = executeReadByParam("").await()
+            flowData = get(param, tag)
         }
         return flowData
+    }
+
+    suspend fun get(param: String, tag: String = ""): Flow<List<Note>> {
+        var myFlowCollector = uiScope.async {
+            when(param) {
+                "dateModified" -> dao.getNotesByDateModified()
+                "title" -> dao.getNotesByTitle()
+                "tags" -> dao.getNotesByTag(tag)
+                else -> dao.getNotesByDateModified()
+            }
+        }
+
+        return myFlowCollector.await()
     }
 
     fun deleteNote(note: Note) = runBlocking { executeDeleteNote(note) }
