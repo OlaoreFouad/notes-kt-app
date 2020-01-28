@@ -195,14 +195,10 @@ class MainActivity : AppCompatActivity() {
                 else -> "title"
             }
             Log.d("App", "Data gotten by param: $param outside")
-            CoroutineScope(Dispatchers.IO).launch {
-                Log.d("App", "Launching the coroutine with the param: $param")
-                viewModel.getNotesBy(param).collect {
-                    Log.d("App", "Size: ${ it.size }")
-                    it.forEach { note -> Log.d("App", "$note") }
-                }
-                Log.d("App", "Completed the coroutine with the param: $param")
-            }
+            viewModel.getN("").observe(this, Observer {
+                Log.d("App", "Data gotten by param: $param inside")
+                it.forEach { Log.d("App", "$it") }
+            })
         } else {
             viewModel.getNotes().observe(this, Observer {
                 adapter.submitList(it as MutableList<Note>)
