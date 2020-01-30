@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import dev.foodie.notes.background.AsyncTasks
 import dev.foodie.notes.models.Note
 import dev.foodie.notes.repository.NoteRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class NoteViewModel(application: Application) : AndroidViewModel(application) {
@@ -35,9 +34,13 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         Log.d("App", "Getting here... Param: $param")
         viewModelScope.launch {
             Log.d("App", "Getting here... - inside the viewModelScope")
-            val task = AsyncTasks.GetNotesBySort(repo.database)
-            val flow = task.execute(param).get()
-            _sortNotes = flow.asLiveData(viewModelScope.coroutineContext)
+            val task = when(param) {
+                "dateModified" -> AsyncTasks.GetNotesByDateModified(repo.database)
+                "title" -> AsyncTasks.GetNotesByTitle(repo.database)
+                else -> null
+            }
+            val flow = task?.execute(param)?.get()
+            _sortNotes = flow?.asLiveData(viewModelScope.coroutineContext)!!
             Log.d("App", "Getting here... - inside the viewModelScope - Size: ${ _sortNotes.value?.size }")
         }
         Log.d("App", "Leaving here...")

@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.Flow;
 
 public class AsyncTasks {
 
-    public static class GetNotesBySort extends AsyncTask<String, Integer, Flow<List<Note>>> {
+    public static class GetNotesByDateModified extends AsyncTask<String, Integer, Flow<List<Note>>> {
 
         private NoteDao dao;
 
-        public GetNotesBySort(NoteDatabase db) {
+        public GetNotesByDateModified(NoteDatabase db) {
             this.dao = db.getNoteDao();
         }
 
@@ -33,21 +33,39 @@ public class AsyncTasks {
 
         @Override
         protected Flow<List<Note>> doInBackground(String... strings) {
-            Flow<List<Note>> flow = null;
+            Flow<List<Note>> flow;
+            flow = this.dao.getNotesByDateModified();
+            return flow;
+        }
 
-            switch(strings[0]) {
-                case "dateModified": {
-                    Log.d("App", "Right here in the async task!");
-                    flow = this.dao.getNotesByDateModified();
-                }
-                break;
-                case "title": {
-                    flow = this.dao.getNotesByTitle();
-                }
-                break;
-                default:
-                    break;
-            }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+    public static class GetNotesByTitle extends AsyncTask<String, Integer, Flow<List<Note>>> {
+
+        private NoteDao dao;
+
+        public GetNotesByTitle(NoteDatabase db) {
+            this.dao = db.getNoteDao();
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Flow<List<Note>> aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Flow<List<Note>> doInBackground(String... strings) {
+            Flow<List<Note>> flow;
+            flow = this.dao.getNotesByTitle();
             return flow;
         }
 
