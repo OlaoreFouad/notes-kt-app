@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class NoteRepository(application: Application) {
-    private var dao: NoteDao
-    private var database: NoteDatabase? = null
+    var dao: NoteDao
+    var database: NoteDatabase? = null
     private var allNotes: LiveData<List<Note>>? = null
 
     val job = Job()
@@ -45,16 +45,12 @@ class NoteRepository(application: Application) {
     fun getNotesByParam(param: String, tag: String = "") = dao.getNotes()
 
     suspend fun get(param: String, tag: String = ""): Flow<List<Note>> {
-        var myFlowCollector = uiScope.async {
-            when(param) {
+        return when(param) {
                 "dateModified" -> dao.getNotesByDateModified()
                 "title" -> dao.getNotesByTitle()
                 "tags" -> dao.getNotesByTag(tag)
                 else -> dao.getNotesByDateModified()
             }
-        }
-
-        return myFlowCollector.await()
     }
 
     fun deleteNote(note: Note) = runBlocking { executeDeleteNote(note) }
