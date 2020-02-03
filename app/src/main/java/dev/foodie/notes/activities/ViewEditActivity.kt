@@ -62,10 +62,14 @@ class ViewEditActivity : AppCompatActivity(), OnTagSelectedListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId) {
-            R.id.nav_share -> { /* TODO: handle share logic */ }
-            R.id.nav_lock -> { /* TODO: handle lock logic */ }
-            R.id.nav_archive -> { /* TODO: handle archive logic */ }
-            R.id.nav_delete -> { /* TODO: handle delete logic */ }
+            R.id.nav_share -> {
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.share_text_template, note.title, note.content))
+                    type = "text/plain"
+                }
+                startActivity(Intent.createChooser(intent, null))
+            }
             R.id.nav_tags -> tag()
             R.id.nav_bookmark -> bookmark()
             R.id.nav_save -> save()

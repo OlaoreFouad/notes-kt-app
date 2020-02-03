@@ -6,17 +6,17 @@
 	android:id="@+id/nav_share"
 	android:title="@string/share_text" />
 
-  <item
-	android:id="@+id/nav_lock"
-	android:title="@string/lock_text" />
+  <!--<item-->
+	<!--android:id="@+id/nav_lock"-->
+	<!--android:title="@string/lock_text" />-->
 
-  <item
-	android:id="@+id/nav_archive"
-	android:title="@string/archive_text" />
+  <!--<item-->
+	<!--android:id="@+id/nav_archive"-->
+	<!--android:title="@string/archive_text" />-->
 
-  <item
-	android:id="@+id/nav_delete"
-	android:title="@string/delete_text" />
+  <!--<item-->
+	<!--android:id="@+id/nav_delete"-->
+	<!--android:title="@string/delete_text" />-->
 
   <item
 	android:id="@+id/nav_tags"
