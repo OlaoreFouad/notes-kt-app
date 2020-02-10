@@ -32,8 +32,10 @@ class NoteAdapter
 
     override fun submitList(list: MutableList<Note>?) {
         super.submitList(list)
-        completeList?.clear()
-        completeList?.addAll(list!!)
+        firstEmission++
+        if (firstEmission == 1) {
+            completeList?.addAll(list!!)
+        }
     }
 
     private val noteFilter = object : Filter() {
