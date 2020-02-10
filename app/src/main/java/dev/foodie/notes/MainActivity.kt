@@ -73,6 +73,8 @@ class MainActivity : AppCompatActivity() {
                 binding.noteRecyclerView.visibility = View.GONE
             } else {
                 adapter.submitList(it as MutableList<Note>)
+                binding.noNotesTextView.visibility = View.GONE
+                binding.noteRecyclerView.visibility = View.VISIBLE
             }
         })
 
@@ -130,6 +132,7 @@ class MainActivity : AppCompatActivity() {
                 editMode = getBoolean("editMode")
 
                 if (editMode) viewModel.updateNote(note) else viewModel.addNote(note)
+                Log.d("App", "Edit mode: $editMode Note: $note")
             }
         }
     }
@@ -177,7 +180,7 @@ class MainActivity : AppCompatActivity() {
 
                     Log.d("App", "Coming from setupSortMethod")
 
-                    setUpSortMethod()
+                    //setUpSortMethod()
                 }
                 bottomBar.show(supportFragmentManager, "bottomBar")
             }
